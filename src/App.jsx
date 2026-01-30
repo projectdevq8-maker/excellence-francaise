@@ -27,7 +27,7 @@ function App() {
       </nav>
 
       <main className="max-w-5xl mx-auto px-6 pt-6 pb-20 text-center">
-        {/* DRAPEAUX - Utilisation d'images pour garantir l'affichage */}
+        {/* DRAPEAUX IMAGES */}
         <div className="flex justify-center items-center gap-4 mb-6">
           <img src="https://flagcdn.com/w80/fr.png" alt="France" className="w-10 h-auto shadow-sm" />
           <span className="text-gray-200 font-light text-2xl">|</span>
@@ -42,38 +42,46 @@ function App() {
           L'art de vivre • Prestige • Kuwait
         </p>
 
-        {/* GRILLE DES 3 CARTES - Plus petites + Contours Dorés */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 max-w-4xl mx-auto">
-          <div className="bg-[#0047AB] rounded-[30px] p-6 text-white min-h-[300px] flex flex-col justify-between shadow-xl border-2 border-[#C5A059] text-left">
+        {/* GRILLE DES 3 CARTES AVEC CONTOUR DORÉ */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
+          <div className="bg-[#0047AB] rounded-[30px] p-6 text-white min-h-[280px] flex flex-col justify-between shadow-xl border-2 border-[#C5A059] text-left">
             <div>
               <h2 className="text-xl font-bold mb-2">Soutien Scolaire</h2>
-              <p className="text-xs opacity-80 font-light">Accompagnement d'élite pour élèves des écoles françaises.</p>
+              <p className="text-[11px] opacity-80 font-light">Accompagnement d'élite pour élèves des écoles françaises.</p>
             </div>
             <div className="text-[8px] font-bold uppercase tracking-widest">Détails →</div>
           </div>
 
-          <div className="bg-white rounded-[30px] p-6 text-gray-900 min-h-[300px] flex flex-col justify-between shadow-lg border-2 border-[#C5A059] transform scale-105 z-10 relative text-left">
+          <div className="bg-white rounded-[30px] p-6 text-gray-900 min-h-[280px] flex flex-col justify-between shadow-lg border-2 border-[#C5A059] transform scale-105 z-10 relative text-left">
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#C5A059] text-white text-[7px] font-bold px-3 py-1 rounded-full uppercase tracking-[0.2em]">Populaire</div>
             <div>
               <h2 className="text-xl font-bold mb-2 text-[#C5A059]">Conversation</h2>
-              <p className="text-xs text-gray-500 italic">Maîtrisez l'art de parler avec l'accent de Paris.</p>
+              <p className="text-[11px] text-gray-500 italic">Maîtrisez l'art de parler avec l'accent de Paris.</p>
             </div>
             <div className="text-[#C5A059] text-[8px] font-bold uppercase tracking-widest">Réserver →</div>
           </div>
 
-          <div className="bg-[#D32F2F] rounded-[30px] p-6 text-white min-h-[300px] flex flex-col justify-between shadow-xl border-2 border-[#C5A059] text-left">
+          <div className="bg-[#D32F2F] rounded-[30px] p-6 text-white min-h-[280px] flex flex-col justify-between shadow-xl border-2 border-[#C5A059] text-left">
             <div>
               <h2 className="text-xl font-bold mb-2">Français Pro</h2>
-              <p className="text-xs opacity-80 font-light">Business, Diplomatie et préparation examens.</p>
+              <p className="text-[11px] opacity-80 font-light">Business, Diplomatie et préparation examens.</p>
             </div>
             <div className="text-[8px] font-bold uppercase tracking-widest">Détails →</div>
           </div>
         </div>
 
-        {/* SECTION CALENDRIER - Plus fine */}
+        {/* NOUVEAU : BOUTON TESTEZ VOTRE NIVEAU */}
+        <div className="mb-12">
+          <button className="group relative px-10 py-4 bg-white border border-[#C5A059] rounded-full overflow-hidden transition-all hover:bg-black">
+            <span className="relative z-10 text-[#C5A059] group-hover:text-white text-[10px] font-bold uppercase tracking-[0.3em]">
+              ✨ Testez votre Niveau
+            </span>
+          </button>
+        </div>
+
+        {/* SECTION CALENDRIER COMPACTE */}
         <div className="bg-gray-900 rounded-[30px] p-6 text-white shadow-2xl border-b-4 border-[#C5A059] max-w-3xl mx-auto">
           <h2 className="text-lg tracking-[0.2em] uppercase font-extralight mb-6 text-center">Réserver une séance</h2>
-          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
             <div>
               <p className="text-[#C5A059] text-[8px] font-bold uppercase tracking-[0.2em] mb-3">1. Jour</p>
@@ -86,7 +94,6 @@ function App() {
                 ))}
               </div>
             </div>
-
             <div>
               <p className="text-[#C5A059] text-[8px] font-bold uppercase tracking-[0.2em] mb-3">2. Heure</p>
               <div className="flex flex-wrap gap-2">
@@ -110,7 +117,7 @@ function App() {
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
           <div className="bg-white rounded-[30px] p-8 max-w-sm w-full border-2 border-[#C5A059] shadow-2xl">
-            <h2 className="text-2xl font-serif italic mb-2">Contact Privé</h2>
+            <h2 className="text-2xl font-serif italic mb-4">Contact Privé</h2>
             <div className="space-y-3">
               <input type="text" placeholder="Nom" className="w-full p-3 border border-gray-100 rounded-xl bg-gray-50 text-sm outline-none focus:border-[#C5A059]" />
               <input type="email" placeholder="Email" className="w-full p-3 border border-gray-100 rounded-xl bg-gray-50 text-sm outline-none focus:border-[#C5A059]" />
@@ -118,7 +125,7 @@ function App() {
             </div>
             <div className="flex gap-4 mt-6">
               <button onClick={() => setShowModal(false)} className="flex-1 text-[9px] font-bold uppercase tracking-widest text-gray-400">Annuler</button>
-              <button className="flex-1 py-3 bg-black text-white rounded-full text-[9px] font-bold uppercase tracking-widest">Envoyer</button>
+              <button className="flex-1 py-3 bg-[#C5A059] text-white rounded-full text-[9px] font-bold uppercase tracking-widest shadow-lg">Envoyer</button>
             </div>
           </div>
         </div>
