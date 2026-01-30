@@ -4,9 +4,20 @@ function App() {
   const [showModal, setShowModal] = useState(false);
   const [selectedDay, setSelectedDay] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
+  
+  // NOUVEAU : On prépare les variables pour le formulaire
+  const [nom, setNom] = useState('');
+  const [message, setMessage] = useState('');
 
   const days = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
   const times = ['10:00', '14:00', '16:00', '18:00', '20:00'];
+
+  // NOUVEAU : La fonction pour envoyer vers WhatsApp
+  const envoyerWhatsApp = () => {
+    const numero = "33667569993"; // <-- METS TON NUMÉRO ICI (ex: 96512345678)
+    const texte = `Bonjour Excellence Française, je suis ${nom}. ${message}. J'aimerais réserver pour le ${selectedDay} à ${selectedTime}.`;
+    window.open(`https://wa.me/${numero}?text=${encodeURIComponent(texte)}`, '_blank');
+  };
 
   return (
     <div className="min-h-screen bg-white text-gray-900 font-sans transition-all duration-500 relative">
@@ -56,7 +67,7 @@ function App() {
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#C5A059] text-white text-[7px] font-bold px-3 py-1 rounded-full uppercase tracking-[0.2em]">Populaire</div>
             <div>
               <h2 className="text-xl font-bold mb-2 text-[#C5A059]">Conversation</h2>
-              <p className="text-[11px] text-gray-500 italic">Maîtrisez l'art de parler avec l'accent de Paris.</p>
+              <p className="text-[11px] text-gray-500 italic">Maîtrisez l'art de parler.</p>
             </div>
             <div className="text-[#C5A059] text-[8px] font-bold uppercase tracking-widest">Réserver →</div>
           </div>
@@ -70,7 +81,7 @@ function App() {
           </div>
         </div>
 
-        {/* NOUVEAU : BOUTON TESTEZ VOTRE NIVEAU */}
+        {/* BOUTON TESTEZ VOTRE NIVEAU */}
         <div className="mb-12">
           <button className="group relative px-10 py-4 bg-white border border-[#C5A059] rounded-full overflow-hidden transition-all hover:bg-black">
             <span className="relative z-10 text-[#C5A059] group-hover:text-white text-[10px] font-bold uppercase tracking-[0.3em]">
@@ -113,19 +124,31 @@ function App() {
         L'Excellence Française • 2026
       </footer>
 
-      {/* MODALE CONTACT */}
+      {/* MODALE CONTACT - MISE À JOUR POUR WHATSAPP */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
           <div className="bg-white rounded-[30px] p-8 max-w-sm w-full border-2 border-[#C5A059] shadow-2xl">
             <h2 className="text-2xl font-serif italic mb-4">Contact Privé</h2>
             <div className="space-y-3">
-              <input type="text" placeholder="Nom" className="w-full p-3 border border-gray-100 rounded-xl bg-gray-50 text-sm outline-none focus:border-[#C5A059]" />
-              <input type="email" placeholder="Email" className="w-full p-3 border border-gray-100 rounded-xl bg-gray-50 text-sm outline-none focus:border-[#C5A059]" />
-              <textarea placeholder="Message" className="w-full p-3 border border-gray-100 rounded-xl bg-gray-50 h-24 text-sm outline-none focus:border-[#C5A059]"></textarea>
+              <input 
+                type="text" 
+                placeholder="Nom" 
+                onChange={(e) => setNom(e.target.value)}
+                className="w-full p-3 border border-gray-100 rounded-xl bg-gray-50 text-sm outline-none focus:border-[#C5A059]" 
+              />
+              <textarea 
+                placeholder="Votre message" 
+                onChange={(e) => setMessage(e.target.value)}
+                className="w-full p-3 border border-gray-100 rounded-xl bg-gray-50 h-24 text-sm outline-none focus:border-[#C5A059]"
+              ></textarea>
             </div>
             <div className="flex gap-4 mt-6">
               <button onClick={() => setShowModal(false)} className="flex-1 text-[9px] font-bold uppercase tracking-widest text-gray-400">Annuler</button>
-              <button className="flex-1 py-3 bg-[#C5A059] text-white rounded-full text-[9px] font-bold uppercase tracking-widest shadow-lg">Envoyer</button>
+              <button 
+                onClick={envoyerWhatsApp}
+                className="flex-1 py-3 bg-[#C5A059] text-white rounded-full text-[9px] font-bold uppercase tracking-widest shadow-lg">
+                Envoyer
+              </button>
             </div>
           </div>
         </div>
