@@ -32,7 +32,7 @@ function App() {
   const times = ['10:00', '14:00', '16:00', '18:00', '20:00'];
 
   const envoyerWhatsApp = () => {
-    const numero = "965XXXXXXX"; // Ton numéro
+    const numero = "33667569993"; // Ton numéro
     const texte = `Bonjour, je suis ${nom}. Score test: ${score}/6. Réservation: ${selectedDay} à ${selectedTime}. Msg: ${message}`;
     window.open(`https://wa.me/${numero}?text=${encodeURIComponent(texte)}`, '_blank');
   };
@@ -88,7 +88,7 @@ function App() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
           {[
             { title: "Soutien Scolaire", bg: "bg-[#0047AB]", text: "Accompagnement d'élite pour élèves des écoles françaises." },
-            { title: "Conversation", bg: "bg-white", text: "Maîtrisez l'art de parler avec l'accent de Paris.", special: true },
+            { title: "Conversation", bg: "bg-white", text: "Maîtrisez l'art de la conversation avec aisance et élégance.", special: true },
             { title: "Français Pro", bg: "bg-[#D32F2F]", text: "Business, Diplomatie et préparation examens." }
           ].map((card, i) => (
             <motion.div 
