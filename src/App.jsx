@@ -1,6 +1,7 @@
-import Navbar from './components/Navbar';
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import Navbar from './components/Navbar'; // Import de la barre de menu
+import Quiz from './components/Quiz';     // Import du Quiz
 
 function App() {
   const [showModal, setShowModal] = useState(false);
@@ -33,18 +34,19 @@ function App() {
   const times = ['10:00', '14:00', '16:00', '18:00', '20:00'];
 
   const envoyerWhatsApp = () => {
-    const numero = "33667569993"; // Remplace par ton numéro
+    const numero = "965XXXXXXX"; // Ton numéro
     const texte = `Bonjour, je suis ${nom}. Score test: ${score}/6. Réservation: ${selectedDay} à ${selectedTime}. Msg: ${message}`;
     window.open(`https://wa.me/${numero}?text=${encodeURIComponent(texte)}`, '_blank');
   };
 
   return (
     <div className="min-h-screen bg-white text-gray-900 font-sans overflow-x-hidden">
-      {/* NAV */}
-     <Navbar setShowModal={setShowModal} />
+      
+      {/* 1. NAVBAR (Le logo et le bouton Contact sont ICI) */}
+      <Navbar setShowModal={setShowModal} />
 
       <main className="max-w-5xl mx-auto px-6 pt-6 pb-20 text-center">
-        {/* DRAPEAUX */}
+        {/* 2. DRAPEAUX */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="flex justify-center items-center gap-4 mb-6">
           <img src="https://flagcdn.com/w80/fr.png" alt="France" className="w-10 h-auto shadow-sm" />
           <span className="text-gray-200 font-light text-2xl">|</span>
@@ -54,7 +56,7 @@ function App() {
         <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="text-5xl md:text-6xl font-serif italic mb-4 tracking-tight">L'Excellence Française</motion.h1>
         <p className="text-gray-400 text-[9px] tracking-[0.4em] uppercase font-light mb-12 text-center">L'art de vivre • Prestige • Kuwait</p>
 
-        {/* CARTES SERVICES */}
+        {/* 3. CARTES SERVICES */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20 max-w-4xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="bg-[#0047AB] rounded-[30px] p-6 text-white min-h-[280px] flex flex-col justify-between shadow-xl border-2 border-[#C5A059] text-left">
             <h2 className="text-xl font-bold mb-2">Soutien Scolaire</h2>
@@ -76,7 +78,7 @@ function App() {
           </motion.div>
         </div>
 
-        {/* SECTION MÉTHODE / ENGAGEMENT */}
+        {/* 4. SECTION ENGAGEMENT */}
         <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="py-16 max-w-4xl mx-auto border-t border-gray-50">
           <h2 className="text-[10px] tracking-[0.4em] uppercase text-gray-400 mb-12 text-center">Notre Engagement</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
@@ -95,14 +97,14 @@ function App() {
           </div>
         </motion.div>
 
-        {/* BOUTON TEST - MAINTENANT CENTRÉ EN DESSOUS DE L'ENGAGEMENT */}
+        {/* 5. BOUTON TEST NIVEAU */}
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} className="flex justify-center mb-20">
           <button onClick={() => {setShowQuiz(true); setQuizTermine(false); setCurrentQuestion(0); setScore(0);}} className="group px-10 py-4 bg-white border border-[#C5A059] rounded-full transition-all hover:bg-black hover:scale-105 active:scale-95">
             <span className="text-[#C5A059] group-hover:text-white text-[10px] font-bold uppercase tracking-[0.3em]">✨ Testez votre Niveau</span>
           </button>
         </motion.div>
 
-        {/* CALENDRIER */}
+        {/* 6. CALENDRIER */}
         <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} className="bg-gray-900 rounded-[30px] p-6 text-white shadow-2xl border-b-4 border-[#C5A059] max-w-3xl mx-auto">
           <h2 className="text-lg tracking-[0.2em] uppercase font-extralight mb-6 text-center">Réserver une séance</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
@@ -126,37 +128,22 @@ function App() {
         </motion.div>
       </main>
 
-      <footer className="pb-8 text-center text-[8px] text-gray-300 tracking-[0.3em] uppercase font-light">L'Excellence Française • 2026</footer>
+      {/* 7. LE QUIZ (Il est maintenant dans son propre fichier) */}
+      <Quiz 
+        showQuiz={showQuiz} 
+        setShowQuiz={setShowQuiz} 
+        quizTermine={quizTermine} 
+        currentQuestion={currentQuestion} 
+        questions={questions} 
+        repondreQuiz={repondreQuiz} 
+        score={score} 
+        setShowModal={setShowModal} 
+      />
 
-      {/* MODALE QUIZ */}
-      {showQuiz && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-          <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-white rounded-[30px] p-8 max-w-md w-full border-2 border-[#C5A059] shadow-2xl text-center">
-            {!quizTermine ? (
-              <>
-                <p className="text-[#C5A059] text-[10px] font-bold uppercase mb-4">Question {currentQuestion + 1} / 3</p>
-                <h2 className="text-xl font-serif italic mb-8">{questions[currentQuestion].q}</h2>
-                <div className="flex flex-col gap-3">
-                  {questions[currentQuestion].options.map((opt, idx) => (
-                    <button key={idx} onClick={() => repondreQuiz(questions[currentQuestion].points[idx])} className="py-4 border border-gray-100 rounded-2xl hover:bg-gray-50 hover:border-[#C5A059] transition-all text-sm font-medium">{opt}</button>
-                  ))}
-                </div>
-              </>
-            ) : (
-              <>
-                <h2 className="text-3xl font-serif italic mb-4">Analyse Terminée</h2>
-                <p className="text-gray-500 mb-8 text-sm">Votre score : <span className="text-[#C5A059] font-bold">{score} / 6</span></p>
-                <button onClick={() => {setShowQuiz(false); setShowModal(true);}} className="w-full py-4 bg-black text-white rounded-full text-[10px] font-bold uppercase tracking-widest">Réserver mon programme</button>
-              </>
-            )}
-          </motion.div>
-        </motion.div>
-      )}
-
-      {/* MODALE CONTACT */}
+      {/* 8. MODALE CONTACT */}
       {showModal && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <motion.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="bg-white rounded-[30px] p-8 max-w-sm w-full border-2 border-[#C5A059] shadow-2xl text-left">
+          <motion.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="bg-white rounded-[30px] p-8 max-sm w-full border-2 border-[#C5A059] shadow-2xl text-left">
             <h2 className="text-2xl font-serif italic mb-4">Contact Privé</h2>
             <div className="space-y-3">
               <input type="text" placeholder="Nom" onChange={(e) => setNom(e.target.value)} className="w-full p-3 border border-gray-100 rounded-xl bg-gray-50 text-sm outline-none focus:border-[#C5A059]" />
@@ -169,6 +156,8 @@ function App() {
           </motion.div>
         </motion.div>
       )}
+
+      <footer className="pb-8 text-center text-[8px] text-gray-300 tracking-[0.3em] uppercase font-light">L'Excellence Française • 2026</footer>
     </div>
   );
 }
