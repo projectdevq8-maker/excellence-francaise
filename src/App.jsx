@@ -4,7 +4,7 @@ import Navbar from './components/Navbar';
 import Quiz from './components/Quiz';
 
 function App() {
-  const [lang, setLang] = useState('en'); // 'en' ou 'ar'
+  const [lang, setLang] = useState('fr'); // Français par défaut
   const [showModal, setShowModal] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
   const [selectedDay, setSelectedDay] = useState('');
@@ -16,42 +16,51 @@ function App() {
   const [score, setScore] = useState(0);
   const [quizTermine, setQuizTermine] = useState(false);
 
-  // Gère la direction Arabe (RTL) ou Anglais (LTR)
   useEffect(() => {
     document.dir = lang === 'ar' ? 'rtl' : 'ltr';
   }, [lang]);
 
   const content = {
+    fr: {
+      title: "L'Excellence Française",
+      subtitle: "L'Art de vivre • Prestige • Kuwait City",
+      cards: [
+        { title: "Soutien Scolaire", desc: "Accompagnement d'élite pour élèves des écoles françaises. Résultats garantis.", bgColor: "bg-[#0047AB]", textColor: "text-white", tag: "RÉUSSITE" },
+        { title: "Conversation", desc: "Maîtrisez l'art de parler avec aisance et élégance parisienne.", bgColor: "bg-white", textColor: "text-gray-900", tag: "POPULAIRE", popular: true },
+        { title: "Français Pro", desc: "Business, Diplomatie et préparation aux examens officiels.", bgColor: "bg-[#D32F2F]", textColor: "text-white", tag: "CARRIÈRE" }
+      ],
+      testBtn: "✨ Déterminer mon niveau",
+      booking: "Conciergerie & Réservations",
+      step1: "1. Choisir le Jour",
+      step2: "2. Choisir l'Heure",
+      send: "Envoyer via WhatsApp"
+    },
     en: {
       title: "French Excellence",
       subtitle: "The Art of Living • Prestige • Kuwait City",
       cards: [
-        { title: "Academic Support", desc: "Elite coaching for French school students.", border: "border-blue-100" },
-        { title: "Conversation", desc: "Master the art of speaking with grace and fluidity.", border: "border-[#C5A059]" },
-        { title: "Professional French", desc: "Business, Diplomacy & Official Exams.", border: "border-red-100" }
+        { title: "Academic Support", desc: "Elite coaching for French school students. High performance.", bgColor: "bg-[#0047AB]", textColor: "text-white", tag: "SUCCESS" },
+        { title: "Conversation", desc: "Master the art of speaking with grace and fluidity.", bgColor: "bg-white", textColor: "text-gray-900", tag: "POPULAR", popular: true },
+        { title: "Professional French", desc: "Business, Diplomacy & Official Exams.", bgColor: "bg-[#D32F2F]", textColor: "text-white", tag: "CAREER" }
       ],
-      testBtn: "✨ Start Level Test",
-      bookingTitle: "Book a Private Session",
+      testBtn: "✨ Determine my Level",
+      booking: "Booking & Concierge",
       step1: "1. Select Day",
       step2: "2. Select Time",
-      footer: "Excellence Française • 2026",
-      contactTitle: "Concierge Service",
       send: "Send to WhatsApp"
     },
     ar: {
       title: "التميز الفرنسي",
       subtitle: "فن الحياة • فخامة • مدينة الكويت",
       cards: [
-        { title: "الدعم الأكاديمي", desc: "تدريب متميز لطلاب المدارس الفرنسية.", border: "border-blue-100" },
-        { title: "المحادثة", desc: "أتقن فن التحدث بكل رقي وانسيابية.", border: "border-[#C5A059]" },
-        { title: "الفرنسية المهنية", desc: "الأعمال، الدبلوماسية والامتحانات الرسمية.", border: "border-red-100" }
+        { title: "الدعم الأكاديمي", desc: "تدريب متميز لطلاب المدارس الفرنسية. نتائج عالية.", bgColor: "bg-[#0047AB]", textColor: "text-white", tag: "نجاح" },
+        { title: "المحادثة", desc: "أتقن فن التحدث بكل رقي وانسيابية باريسية.", bgColor: "bg-white", textColor: "text-gray-900", tag: "مطلوب", popular: true },
+        { title: "الفرنسية المهنية", desc: "الأعمال، الدبلوماسية والامتحانات الرسمية.", bgColor: "bg-[#D32F2F]", textColor: "text-white", tag: "مهني" }
       ],
       testBtn: "✨ ابدأ اختبار المستوى",
-      bookingTitle: "حجز جلسة خاصة",
+      booking: "حجز موعد خاص",
       step1: "١. اختر اليوم",
       step2: "٢. اختر الوقت",
-      footer: "التميز الفرنسي • ٢٠٢٦",
-      contactTitle: "خدمة المساعدة",
       send: "إرسال عبر واتساب"
     }
   };
@@ -61,30 +70,27 @@ function App() {
 
   const repondreQuiz = (points) => {
     setScore(score + points);
-    if (currentQuestion + 1 < 3) {
-      setCurrentQuestion(currentQuestion + 1);
-    } else {
-      setQuizTermine(true);
-    }
+    if (currentQuestion + 1 < 3) setCurrentQuestion(currentQuestion + 1);
+    else setQuizTermine(true);
   };
 
   const envoyerWhatsApp = () => {
     const numero = "33667569993";
-    const texte = `Bonjour. Nom: ${nom}. RDV: ${selectedDay} ${selectedTime}. Message: ${message}`;
+    const texte = `Bonjour. Nom: ${nom}. RDV: ${selectedDay} ${selectedTime}. Langue: ${lang}.`;
     window.open(`https://wa.me/${numero}?text=${texte}`, '_blank');
   };
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 font-sans overflow-x-hidden">
+    <div className="min-h-screen bg-white text-gray-900 font-sans selection:bg-[#C5A059] selection:text-white">
       
-      {/* BOUTONS DE LANGUE FLOTTANTS */}
-      <div className="fixed top-24 right-6 z-50 flex flex-col gap-3">
-        {['en', 'ar'].map((l) => (
+      {/* SÉLECTEUR DE LANGUE (DISCRET ET LUXUEUX) */}
+      <div className="fixed top-24 right-6 z-[60] flex flex-col gap-2">
+        {['fr', 'en', 'ar'].map((l) => (
           <button 
-            key={l}
+            key={l} 
             onClick={() => setLang(l)} 
-            className={`w-12 h-12 rounded-full border-2 transition-all shadow-lg flex items-center justify-center font-bold text-[10px]
-              ${lang === l ? 'bg-[#C5A059] border-[#C5A059] text-white scale-110' : 'bg-white border-gray-100 text-gray-400 hover:border-black'}`}
+            className={`w-10 h-10 rounded-full border shadow-lg font-bold text-[9px] transition-all flex items-center justify-center
+              ${lang === l ? 'bg-[#C5A059] text-white border-[#C5A059] scale-110' : 'bg-white text-gray-300 hover:border-black'}`}
           >
             {l.toUpperCase()}
           </button>
@@ -93,76 +99,96 @@ function App() {
 
       <Navbar setShowModal={setShowModal} />
 
-      <main className="max-w-6xl mx-auto px-6 pt-12 pb-32 text-center">
+      <main className="max-w-7xl mx-auto px-6 pt-16 pb-32 text-center">
         
-        {/* TITRE PRINCIPAL */}
-        <motion.div 
-          initial={{ opacity: 0, y: 50 }} 
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          className="mb-20"
-        >
-          <h1 className="text-5xl md:text-8xl font-serif italic mb-6 tracking-tight">
-            {t.title}
-          </h1>
-          <p className="text-[#C5A059] text-[10px] sm:text-[12px] tracking-[0.6em] uppercase font-light">
-            {t.subtitle}
-          </p>
+        {/* HERO SECTION */}
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }} className="mb-24">
+          <div className="flex justify-center gap-4 mb-8">
+            <img src="https://flagcdn.com/w80/fr.png" alt="FR" className="w-10 shadow-sm" />
+            <div className="w-[1px] bg-gray-200 h-8"></div>
+            <img src="https://flagcdn.com/w80/kw.png" alt="KW" className="w-10 shadow-sm" />
+          </div>
+          <h1 className="text-6xl md:text-8xl font-serif italic mb-6 tracking-tighter leading-tight">{t.title}</h1>
+          <p className="text-[#C5A059] text-[11px] tracking-[0.6em] uppercase font-light">{t.subtitle}</p>
         </motion.div>
 
-        {/* CARTES / FORMULES */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32">
+        {/* LES FORMULES (BLEU BLANC ROUGE + ANIMATIONS RESTAURÉES) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32 px-4 relative">
           {t.cards.map((card, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 80 }}
+              initial={{ opacity: 0, y: 100 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.2, duration: 0.8 }}
-              whileHover={{ y: -15, scale: 1.02 }}
-              className={`p-10 rounded-[45px] bg-white border ${card.border} shadow-xl text-left flex flex-col justify-between min-h-[340px] cursor-pointer`}
+              transition={{ delay: i * 0.2, type: "spring", stiffness: 50 }}
+              whileHover={{ y: -20, scale: 1.02, boxShadow: "0 40px 80px -20px rgba(0,0,0,0.15)" }}
+              className={`p-10 rounded-[45px] border-2 border-[#C5A059] ${card.bgColor} ${card.textColor} flex flex-col justify-between min-h-[380px] relative text-left shadow-2xl transition-all group overflow-hidden`}
             >
-              <div>
-                <div className="w-10 h-1 bg-[#C5A059] mb-6"></div>
-                <h2 className="text-2xl font-bold mb-4">{card.title}</h2>
-                <p className="text-gray-500 text-sm leading-relaxed font-light">{card.desc}</p>
+              {card.popular && (
+                <div className="absolute top-6 right-8 bg-[#C5A059] text-white text-[8px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest z-10">
+                  {card.tag}
+                </div>
+              )}
+              {!card.popular && (
+                <div className={`absolute top-6 right-8 text-[8px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest border border-current opacity-30`}>
+                  {card.tag}
+                </div>
+              )}
+
+              <div className={isAr ? 'text-right' : 'text-left'}>
+                <div className={`w-12 h-1 mb-8 ${card.bgColor === 'bg-white' ? 'bg-[#C5A059]' : 'bg-white'}`}></div>
+                <h2 className="text-3xl font-bold mb-6 tracking-tight">{card.title}</h2>
+                <p className={`text-base leading-relaxed font-light ${card.bgColor === 'bg-white' ? 'text-gray-500' : 'opacity-80'}`}>
+                  {card.desc}
+                </p>
               </div>
-              <div className="text-[9px] font-bold uppercase tracking-widest text-[#C5A059]">Prestige Service →</div>
+
+              <div className={`flex items-center gap-3 mt-10 ${isAr ? 'flex-row-reverse' : 'flex-row'}`}>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center border ${card.bgColor === 'bg-white' ? 'border-gray-100' : 'border-white/20'}`}>
+                   <span className="text-xs">→</span>
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-widest">{isAr ? 'تفاصيل' : 'Détails'}</span>
+              </div>
             </motion.div>
           ))}
         </div>
 
-        {/* BOUTON TEST */}
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="mb-32">
-          <button 
-            onClick={() => {setShowQuiz(true); setQuizTermine(false); setCurrentQuestion(0); setScore(0);}}
-            className="px-12 py-5 bg-black text-white rounded-full text-[11px] font-bold uppercase tracking-[0.3em] hover:bg-[#C5A059] transition-all shadow-2xl"
-          >
-            {t.testBtn}
-          </button>
-        </motion.div>
+        {/* SECTION TEST & SERVICES */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-32 border-y border-gray-50 py-16">
+          {["Sur-mesure", "Excellence", "Prestige"].map((item, idx) => (
+            <div key={idx} className="text-center">
+              <h3 className="text-[#C5A059] text-[10px] font-bold uppercase tracking-[0.3em] mb-2 italic">{item}</h3>
+              <div className="w-8 h-[1px] bg-gray-100 mx-auto"></div>
+            </div>
+          ))}
+        </div>
 
-        {/* AGENDA */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          className="bg-[#FBFBFB] rounded-[60px] p-10 md:p-20 border border-gray-100 shadow-inner max-w-5xl mx-auto"
+        <motion.button 
+          whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+          onClick={() => {setShowQuiz(true); setQuizTermine(false);}}
+          className="px-16 py-6 bg-black text-white rounded-full text-[12px] font-black uppercase tracking-[0.4em] hover:bg-[#C5A059] transition-all shadow-2xl mb-40"
         >
-          <h2 className="text-3xl font-serif italic mb-16">{t.bookingTitle}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 text-left">
+          {t.testBtn}
+        </motion.button>
+
+        {/* AGENDA LUXE RESTAURÉ */}
+        <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} className="bg-[#FBFBFB] rounded-[60px] p-12 md:p-24 border border-gray-100 shadow-inner max-w-6xl mx-auto text-left relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-1 bg-[#C5A059]"></div>
+          <h2 className={`text-4xl font-serif italic mb-16 ${isAr ? 'text-right' : ''}`}>{t.booking}</h2>
+          <div className={`grid grid-cols-1 md:grid-cols-2 gap-20 ${isAr ? 'text-right' : ''}`}>
             <div>
-              <p className="text-[#C5A059] text-[10px] font-bold uppercase mb-8 tracking-widest border-l-2 border-[#C5A059] pl-4">{t.step1}</p>
+              <p className="text-[#C5A059] text-[10px] font-bold uppercase mb-8 tracking-widest pl-4 border-l-2 border-[#C5A059]">{t.step1}</p>
               <div className="flex flex-wrap gap-3">
                 {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
-                  <button key={d} onClick={() => setSelectedDay(d)} className={`px-6 py-3 rounded-2xl text-[12px] border transition-all ${selectedDay === d ? 'bg-black text-white border-black shadow-lg' : 'bg-white border-gray-200 hover:border-black'}`}>{d}</button>
+                  <button key={d} onClick={() => setSelectedDay(d)} className={`px-6 py-3 rounded-2xl text-[12px] border transition-all ${selectedDay === d ? 'bg-black text-white border-black' : 'bg-white border-gray-200 hover:border-black'}`}>{d}</button>
                 ))}
               </div>
             </div>
             <div>
-              <p className="text-[#C5A059] text-[10px] font-bold uppercase mb-8 tracking-widest border-l-2 border-[#C5A059] pl-4">{t.step2}</p>
+              <p className="text-[#C5A059] text-[10px] font-bold uppercase mb-8 tracking-widest pl-4 border-l-2 border-[#C5A059]">{t.step2}</p>
               <div className="flex flex-wrap gap-3">
                 {['10:00', '14:00', '16:00', '18:00', '20:00'].map(h => (
-                  <button key={h} onClick={() => setSelectedTime(h)} className={`px-6 py-3 rounded-2xl text-[12px] border transition-all ${selectedTime === h ? 'bg-black text-white border-black shadow-lg' : 'bg-white border-gray-200 hover:border-black'}`}>{h}</button>
+                  <button key={h} onClick={() => setSelectedTime(h)} className={`px-6 py-3 rounded-2xl text-[12px] border transition-all ${selectedTime === h ? 'bg-black text-white border-black' : 'bg-white border-gray-200 hover:border-black'}`}>{h}</button>
                 ))}
               </div>
             </div>
@@ -170,31 +196,27 @@ function App() {
         </motion.div>
       </main>
 
-      {/* MODALE CONTACT */}
+      {/* MODALE CONCIERGERIE */}
       <AnimatePresence>
         {showModal && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-white/90 backdrop-blur-xl">
-            <motion.div initial={{ y: 100 }} animate={{ y: 0 }} className="bg-white p-12 rounded-[50px] border border-gray-100 shadow-2xl max-w-md w-full text-left">
-              <h2 className="text-3xl font-serif italic mb-8">{t.contactTitle}</h2>
-              <input type="text" placeholder="Name" onChange={(e)=>setNom(e.target.value)} className="w-full py-4 border-b outline-none focus:border-[#C5A059] mb-4" />
-              <textarea placeholder="Message" onChange={(e)=>setMessage(e.target.value)} className="w-full py-4 border-b h-24 resize-none outline-none focus:border-[#C5A059] mb-8"></textarea>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-white/95 backdrop-blur-xl">
+            <motion.div initial={{ y: 100 }} animate={{ y: 0 }} className="bg-white p-16 rounded-[60px] border border-gray-100 shadow-3xl max-w-xl w-full">
+              <h2 className="text-4xl font-serif italic mb-8">Concierge</h2>
+              <input type="text" placeholder="Full Name" onChange={(e)=>setNom(e.target.value)} className="w-full py-5 border-b border-gray-100 outline-none focus:border-[#C5A059] mb-6 text-xl" />
+              <textarea placeholder="Your Message" onChange={(e)=>setMessage(e.target.value)} className="w-full py-5 border-b border-gray-100 h-24 resize-none outline-none focus:border-[#C5A059] mb-12 text-xl"></textarea>
               <div className="flex gap-4">
                 <button onClick={() => setShowModal(false)} className="text-[10px] font-bold uppercase text-gray-400">Back</button>
-                <button onClick={envoyerWhatsApp} className="flex-1 py-5 bg-black text-white rounded-full text-[10px] font-bold uppercase tracking-widest shadow-xl">{t.send}</button>
+                <button onClick={envoyerWhatsApp} className="flex-1 py-6 bg-black text-white rounded-full text-[10px] font-bold uppercase tracking-[0.2em] shadow-xl">{t.send}</button>
               </div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <Quiz 
-        showQuiz={showQuiz} setShowQuiz={setShowQuiz} quizTermine={quizTermine} 
-        currentQuestion={currentQuestion} questions={[]} 
-        repondreQuiz={repondreQuiz} score={score} setShowModal={setShowModal} 
-      />
+      <Quiz showQuiz={showQuiz} setShowQuiz={setShowQuiz} quizTermine={quizTermine} currentQuestion={currentQuestion} questions={[]} repondreQuiz={repondreQuiz} score={score} setShowModal={setShowModal} />
 
       <footer className="pb-16 text-center text-[9px] text-gray-300 tracking-[0.5em] uppercase font-light">
-        {t.footer}
+        Excellence Française • 2026
       </footer>
     </div>
   );
