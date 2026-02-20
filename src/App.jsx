@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Globe, MessageCircle, Calendar, GraduationCap, Award, Briefcase, ChevronRight, X } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Quiz from './components/Quiz';
 
 function App() {
-  const [lang, setLang] = useState('fr'); // Français par défaut
+  const [lang, setLang] = useState('fr');
   const [showModal, setShowModal] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
   const [selectedDay, setSelectedDay] = useState('');
@@ -23,190 +24,160 @@ function App() {
   const content = {
     fr: {
       title: "L'Excellence Française",
-      subtitle: "L'Art de vivre • Prestige • Kuwait City",
+      subtitle: "PRESTIGE • EDUCATION • KUWAIT CITY",
       cards: [
-        { title: "Soutien Scolaire", desc: "Accompagnement d'élite pour élèves des écoles françaises. Résultats garantis.", bgColor: "bg-[#0047AB]", textColor: "text-white", tag: "RÉUSSITE" },
-        { title: "Conversation", desc: "Maîtrisez l'art de parler avec aisance et élégance parisienne.", bgColor: "bg-white", textColor: "text-gray-900", tag: "POPULAIRE", popular: true },
-        { title: "Français Pro", desc: "Business, Diplomatie et préparation aux examens officiels.", bgColor: "bg-[#D32F2F]", textColor: "text-white", tag: "CARRIÈRE" }
+        { title: "Soutien Scolaire", desc: "Accompagnement d'élite, cursus français.", icon: <GraduationCap size={20}/>, color: "text-[#0047AB]" },
+        { title: "Conversation", desc: "L'art de l'éloquence et du savoir-vivre.", icon: <MessageCircle size={20}/>, color: "text-[#C5A059]" },
+        { title: "Français Pro", desc: "Diplomatie et Business international.", icon: <Briefcase size={20}/>, color: "text-[#D32F2F]" }
       ],
-      testBtn: "✨ Déterminer mon niveau",
-      booking: "Conciergerie & Réservations",
-      step1: "1. Choisir le Jour",
-      step2: "2. Choisir l'Heure",
-      send: "Envoyer via WhatsApp"
+      cta: "Évaluer mon niveau",
+      booking: "Réservation Concierge",
+      footer: "L'Excellence Française — Tous droits réservés 2026"
     },
     en: {
       title: "French Excellence",
-      subtitle: "The Art of Living • Prestige • Kuwait City",
+      subtitle: "PRESTIGE • EDUCATION • KUWAIT CITY",
       cards: [
-        { title: "Academic Support", desc: "Elite coaching for French school students. High performance.", bgColor: "bg-[#0047AB]", textColor: "text-white", tag: "SUCCESS" },
-        { title: "Conversation", desc: "Master the art of speaking with grace and fluidity.", bgColor: "bg-white", textColor: "text-gray-900", tag: "POPULAR", popular: true },
-        { title: "Professional French", desc: "Business, Diplomacy & Official Exams.", bgColor: "bg-[#D32F2F]", textColor: "text-white", tag: "CAREER" }
+        { title: "Academic Support", desc: "Elite coaching for French curriculum.", icon: <GraduationCap size={20}/>, color: "text-[#0047AB]" },
+        { title: "Conversation", desc: "Master the art of eloquent speech.", icon: <MessageCircle size={20}/>, color: "text-[#C5A059]" },
+        { title: "Professional French", desc: "Diplomacy & International Business.", icon: <Briefcase size={20}/>, color: "text-[#D32F2F]" }
       ],
-      testBtn: "✨ Determine my Level",
-      booking: "Booking & Concierge",
-      step1: "1. Select Day",
-      step2: "2. Select Time",
-      send: "Send to WhatsApp"
+      cta: "Start Assessment",
+      booking: "Concierge Booking",
+      footer: "French Excellence — All rights reserved 2026"
     },
     ar: {
       title: "التميز الفرنسي",
-      subtitle: "فن الحياة • فخامة • مدينة الكويت",
+      subtitle: "فخامة • تعليم • مدينة الكويت",
       cards: [
-        { title: "الدعم الأكاديمي", desc: "تدريب متميز لطلاب المدارس الفرنسية. نتائج عالية.", bgColor: "bg-[#0047AB]", textColor: "text-white", tag: "نجاح" },
-        { title: "المحادثة", desc: "أتقن فن التحدث بكل رقي وانسيابية باريسية.", bgColor: "bg-white", textColor: "text-gray-900", tag: "مطلوب", popular: true },
-        { title: "الفرنسية المهنية", desc: "الأعمال، الدبلوماسية والامتحانات الرسمية.", bgColor: "bg-[#D32F2F]", textColor: "text-white", tag: "مهني" }
+        { title: "الدعم الأكاديمي", desc: "تدريب متميز للمنهج الفرنسي.", icon: <GraduationCap size={20}/>, color: "text-[#0047AB]" },
+        { title: "المحادثة", desc: "إتقان فن التحدث بكل رقي.", icon: <MessageCircle size={20}/>, color: "text-[#C5A059]" },
+        { title: "الفرنسية المهنية", desc: "الأعمال والدبلوماسية الدولية.", icon: <Briefcase size={20}/>, color: "text-[#D32F2F]" }
       ],
-      testBtn: "✨ ابدأ اختبار المستوى",
+      cta: "ابدأ اختبار المستوى",
       booking: "حجز موعد خاص",
-      step1: "١. اختر اليوم",
-      step2: "٢. اختر الوقت",
-      send: "إرسال عبر واتساب"
+      footer: "التميز الفرنسي — جميع الحقوق محفوظة ٢٠٢٦"
     }
   };
 
   const t = content[lang];
   const isAr = lang === 'ar';
 
-  const repondreQuiz = (points) => {
-    setScore(score + points);
-    if (currentQuestion + 1 < 3) setCurrentQuestion(currentQuestion + 1);
-    else setQuizTermine(true);
-  };
-
-  const envoyerWhatsApp = () => {
-    const numero = "33667569993";
-    const texte = `Bonjour. Nom: ${nom}. RDV: ${selectedDay} ${selectedTime}. Langue: ${lang}.`;
-    window.open(`https://wa.me/${numero}?text=${texte}`, '_blank');
-  };
+  const repondreQuiz = (p) => { setScore(score + p); if (currentQuestion + 1 < 3) setCurrentQuestion(currentQuestion + 1); else setQuizTermine(true); };
+  const envoyerWhatsApp = () => { window.open(`https://wa.me/33667569993?text=Nom: ${nom}. RDV: ${selectedDay} ${selectedTime}.`, '_blank'); };
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 font-sans selection:bg-[#C5A059] selection:text-white">
+    <div className="min-h-screen bg-[#F9FAFB] text-[#111827] font-sans selection:bg-[#C5A059] selection:text-white">
       
-      {/* SÉLECTEUR DE LANGUE (DISCRET ET LUXUEUX) */}
-      <div className="fixed top-24 right-6 z-[60] flex flex-col gap-2">
+      {/* LANGUAGE SELECTOR */}
+      <nav className="fixed top-24 right-8 z-[70] flex flex-col gap-3">
         {['fr', 'en', 'ar'].map((l) => (
-          <button 
-            key={l} 
-            onClick={() => setLang(l)} 
-            className={`w-10 h-10 rounded-full border shadow-lg font-bold text-[9px] transition-all flex items-center justify-center
-              ${lang === l ? 'bg-[#C5A059] text-white border-[#C5A059] scale-110' : 'bg-white text-gray-300 hover:border-black'}`}
-          >
+          <button key={l} onClick={() => setLang(l)} className={`w-11 h-11 rounded-full border-[0.5px] bg-white shadow-sm flex items-center justify-center text-[10px] font-bold tracking-tighter transition-all hover:scale-110 active:scale-95 ${lang === l ? 'border-black text-black' : 'border-gray-100 text-gray-300'}`}>
             {l.toUpperCase()}
           </button>
         ))}
-      </div>
+      </nav>
 
       <Navbar setShowModal={setShowModal} />
 
-      <main className="max-w-7xl mx-auto px-6 pt-16 pb-32 text-center">
+      <main className="max-w-6xl mx-auto px-8 pt-24 pb-32">
         
-        {/* HERO SECTION */}
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }} className="mb-24">
-          <div className="flex justify-center gap-4 mb-8">
-            <img src="https://flagcdn.com/w80/fr.png" alt="FR" className="w-10 shadow-sm" />
-            <div className="w-[1px] bg-gray-200 h-8"></div>
-            <img src="https://flagcdn.com/w80/kw.png" alt="KW" className="w-10 shadow-sm" />
-          </div>
-          <h1 className="text-6xl md:text-8xl font-serif italic mb-6 tracking-tighter leading-tight">{t.title}</h1>
-          <p className="text-[#C5A059] text-[11px] tracking-[0.6em] uppercase font-light">{t.subtitle}</p>
-        </motion.div>
+        {/* HEADER SECTION */}
+        <header className="text-center mb-32">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+            <p className="text-[#C5A059] text-[10px] tracking-[0.8em] font-medium mb-6 uppercase">{t.subtitle}</p>
+            <h1 className="text-6xl md:text-8xl font-serif italic tracking-tighter mb-12">{t.title}</h1>
+            <div className="flex justify-center items-center gap-4 text-gray-300">
+              <span className="w-12 h-[0.5px] bg-current"></span>
+              <Globe size={16} />
+              <span className="w-12 h-[0.5px] bg-current"></span>
+            </div>
+          </motion.div>
+        </header>
 
-        {/* LES FORMULES (BLEU BLANC ROUGE + ANIMATIONS RESTAURÉES) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32 px-4 relative">
+        {/* BENTO GRID SERVICES */}
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24">
           {t.cards.map((card, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 100 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.2, type: "spring", stiffness: 50 }}
-              whileHover={{ y: -20, scale: 1.02, boxShadow: "0 40px 80px -20px rgba(0,0,0,0.15)" }}
-              className={`p-10 rounded-[45px] border-2 border-[#C5A059] ${card.bgColor} ${card.textColor} flex flex-col justify-between min-h-[380px] relative text-left shadow-2xl transition-all group overflow-hidden`}
+              whileHover={{ y: -8 }}
+              className="p-10 bg-white rounded-3xl border-[0.5px] border-gray-100 shadow-sm flex flex-col justify-between min-h-[320px] transition-all group"
             >
-              {card.popular && (
-                <div className="absolute top-6 right-8 bg-[#C5A059] text-white text-[8px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest z-10">
-                  {card.tag}
-                </div>
-              )}
-              {!card.popular && (
-                <div className={`absolute top-6 right-8 text-[8px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest border border-current opacity-30`}>
-                  {card.tag}
-                </div>
-              )}
-
               <div className={isAr ? 'text-right' : 'text-left'}>
-                <div className={`w-12 h-1 mb-8 ${card.bgColor === 'bg-white' ? 'bg-[#C5A059]' : 'bg-white'}`}></div>
-                <h2 className="text-3xl font-bold mb-6 tracking-tight">{card.title}</h2>
-                <p className={`text-base leading-relaxed font-light ${card.bgColor === 'bg-white' ? 'text-gray-500' : 'opacity-80'}`}>
-                  {card.desc}
-                </p>
-              </div>
-
-              <div className={`flex items-center gap-3 mt-10 ${isAr ? 'flex-row-reverse' : 'flex-row'}`}>
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center border ${card.bgColor === 'bg-white' ? 'border-gray-100' : 'border-white/20'}`}>
-                   <span className="text-xs">→</span>
+                <div className={`mb-8 p-3 inline-block rounded-2xl bg-[#F9FAFB] ${card.color}`}>
+                  {card.icon}
                 </div>
-                <span className="text-[10px] font-bold uppercase tracking-widest">{isAr ? 'تفاصيل' : 'Détails'}</span>
+                <h2 className="text-2xl font-serif italic mb-4 tracking-tight">{card.title}</h2>
+                <p className="text-gray-400 text-sm leading-relaxed font-light">{card.desc}</p>
+              </div>
+              <div className={`flex items-center gap-2 pt-8 text-[10px] font-bold tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-all ${isAr ? 'flex-row-reverse' : ''}`}>
+                <span>{isAr ? 'اكتشف' : 'Découvrir'}</span>
+                <ChevronRight size={12} />
               </div>
             </motion.div>
           ))}
-        </div>
+        </section>
 
-        {/* SECTION TEST & SERVICES */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-32 border-y border-gray-50 py-16">
-          {["Sur-mesure", "Excellence", "Prestige"].map((item, idx) => (
-            <div key={idx} className="text-center">
-              <h3 className="text-[#C5A059] text-[10px] font-bold uppercase tracking-[0.3em] mb-2 italic">{item}</h3>
-              <div className="w-8 h-[1px] bg-gray-100 mx-auto"></div>
+        {/* CTA SECTION */}
+        <section className="flex justify-center mb-32">
+          <motion.button 
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => {setShowQuiz(true); setQuizTermine(false);}}
+            className="px-12 py-6 bg-[#111827] text-white rounded-full text-[11px] font-bold uppercase tracking-[0.4em] shadow-xl hover:bg-black transition-all"
+          >
+            {t.cta}
+          </motion.button>
+        </section>
+
+        {/* BENTO BOOKING SECTION */}
+        <section className="bg-white rounded-[40px] border-[0.5px] border-gray-100 p-12 md:p-20 shadow-sm overflow-hidden relative">
+          <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#C5A059] to-transparent opacity-30"></div>
+          <div className={`flex flex-col md:flex-row justify-between items-start gap-16 ${isAr ? 'md:flex-row-reverse text-right' : 'text-left'}`}>
+            <div className="max-w-xs">
+              <h2 className="text-4xl font-serif italic mb-6 tracking-tight">{t.booking}</h2>
+              <p className="text-gray-400 text-sm font-light">Service exclusif disponible sur rendez-vous uniquement.</p>
             </div>
-          ))}
-        </div>
-
-        <motion.button 
-          whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-          onClick={() => {setShowQuiz(true); setQuizTermine(false);}}
-          className="px-16 py-6 bg-black text-white rounded-full text-[12px] font-black uppercase tracking-[0.4em] hover:bg-[#C5A059] transition-all shadow-2xl mb-40"
-        >
-          {t.testBtn}
-        </motion.button>
-
-        {/* AGENDA LUXE RESTAURÉ */}
-        <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} className="bg-[#FBFBFB] rounded-[60px] p-12 md:p-24 border border-gray-100 shadow-inner max-w-6xl mx-auto text-left relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-1 bg-[#C5A059]"></div>
-          <h2 className={`text-4xl font-serif italic mb-16 ${isAr ? 'text-right' : ''}`}>{t.booking}</h2>
-          <div className={`grid grid-cols-1 md:grid-cols-2 gap-20 ${isAr ? 'text-right' : ''}`}>
-            <div>
-              <p className="text-[#C5A059] text-[10px] font-bold uppercase mb-8 tracking-widest pl-4 border-l-2 border-[#C5A059]">{t.step1}</p>
-              <div className="flex flex-wrap gap-3">
-                {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
-                  <button key={d} onClick={() => setSelectedDay(d)} className={`px-6 py-3 rounded-2xl text-[12px] border transition-all ${selectedDay === d ? 'bg-black text-white border-black' : 'bg-white border-gray-200 hover:border-black'}`}>{d}</button>
-                ))}
+            
+            <div className="flex-1 w-full grid grid-cols-1 gap-12">
+              <div className="space-y-6">
+                <span className="text-[#C5A059] text-[10px] font-bold tracking-[0.3em] uppercase">{t.step1}</span>
+                <div className="flex flex-wrap gap-3">
+                  {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
+                    <button key={d} onClick={() => setSelectedDay(d)} className={`px-6 py-3 rounded-xl text-xs border-[0.5px] transition-all ${selectedDay === d ? 'bg-black text-white border-black' : 'bg-white border-gray-100 hover:border-black'}`}>{d}</button>
+                  ))}
+                </div>
               </div>
-            </div>
-            <div>
-              <p className="text-[#C5A059] text-[10px] font-bold uppercase mb-8 tracking-widest pl-4 border-l-2 border-[#C5A059]">{t.step2}</p>
-              <div className="flex flex-wrap gap-3">
-                {['10:00', '14:00', '16:00', '18:00', '20:00'].map(h => (
-                  <button key={h} onClick={() => setSelectedTime(h)} className={`px-6 py-3 rounded-2xl text-[12px] border transition-all ${selectedTime === h ? 'bg-black text-white border-black' : 'bg-white border-gray-200 hover:border-black'}`}>{h}</button>
-                ))}
+              <div className="space-y-6">
+                <span className="text-[#C5A059] text-[10px] font-bold tracking-[0.3em] uppercase">{t.step2}</span>
+                <div className="flex flex-wrap gap-3">
+                  {['10:00', '14:00', '16:00', '18:00', '20:00'].map(h => (
+                    <button key={h} onClick={() => setSelectedTime(h)} className={`px-6 py-3 rounded-xl text-xs border-[0.5px] transition-all ${selectedTime === h ? 'bg-black text-white border-black' : 'bg-white border-gray-100 hover:border-black'}`}>{h}</button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </motion.div>
+        </section>
       </main>
 
-      {/* MODALE CONCIERGERIE */}
+      <footer className="py-20 border-t border-gray-50 text-center">
+        <p className="text-[9px] text-gray-300 tracking-[0.5em] font-light uppercase">{t.footer}</p>
+      </footer>
+
+      {/* MODAL CONCIERGE */}
       <AnimatePresence>
         {showModal && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-white/95 backdrop-blur-xl">
-            <motion.div initial={{ y: 100 }} animate={{ y: 0 }} className="bg-white p-16 rounded-[60px] border border-gray-100 shadow-3xl max-w-xl w-full">
-              <h2 className="text-4xl font-serif italic mb-8">Concierge</h2>
-              <input type="text" placeholder="Full Name" onChange={(e)=>setNom(e.target.value)} className="w-full py-5 border-b border-gray-100 outline-none focus:border-[#C5A059] mb-6 text-xl" />
-              <textarea placeholder="Your Message" onChange={(e)=>setMessage(e.target.value)} className="w-full py-5 border-b border-gray-100 h-24 resize-none outline-none focus:border-[#C5A059] mb-12 text-xl"></textarea>
-              <div className="flex gap-4">
-                <button onClick={() => setShowModal(false)} className="text-[10px] font-bold uppercase text-gray-400">Back</button>
-                <button onClick={envoyerWhatsApp} className="flex-1 py-6 bg-black text-white rounded-full text-[10px] font-bold uppercase tracking-[0.2em] shadow-xl">{t.send}</button>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-[#F9FAFB]/95 backdrop-blur-md">
+            <motion.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="bg-white p-12 md:p-16 rounded-[40px] border-[0.5px] border-gray-100 shadow-2xl max-w-xl w-full">
+              <div className="flex justify-between items-center mb-12">
+                <h2 className="text-3xl font-serif italic tracking-tight">Concierge</h2>
+                <button onClick={() => setShowModal(false)} className="text-gray-300 hover:text-black transition-colors"><X size={20}/></button>
+              </div>
+              <div className="space-y-10">
+                <input type="text" placeholder="Full Name" onChange={(e)=>setNom(e.target.value)} className="w-full py-4 bg-transparent border-b-[0.5px] border-gray-100 outline-none focus:border-black transition-all text-lg font-light" />
+                <textarea placeholder="Your Message" onChange={(e)=>setMessage(e.target.value)} className="w-full py-4 bg-transparent border-b-[0.5px] border-gray-100 h-24 resize-none outline-none focus:border-black transition-all text-lg font-light" />
+                <button onClick={envoyerWhatsApp} className="w-full py-6 bg-black text-white rounded-full text-[11px] font-bold uppercase tracking-[0.3em]">Envoyer</button>
               </div>
             </motion.div>
           </motion.div>
@@ -214,10 +185,6 @@ function App() {
       </AnimatePresence>
 
       <Quiz showQuiz={showQuiz} setShowQuiz={setShowQuiz} quizTermine={quizTermine} currentQuestion={currentQuestion} questions={[]} repondreQuiz={repondreQuiz} score={score} setShowModal={setShowModal} />
-
-      <footer className="pb-16 text-center text-[9px] text-gray-300 tracking-[0.5em] uppercase font-light">
-        Excellence Française • 2026
-      </footer>
     </div>
   );
 }
