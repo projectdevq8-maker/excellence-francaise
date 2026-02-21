@@ -4,7 +4,7 @@ import Navbar from './components/Navbar';
 import Quiz from './components/Quiz';
 
 function App() {
-  const [lang, setLang] = useState('fr'); 
+  const [lang, setLang] = useState('fr');
   const [showModal, setShowModal] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
   const [selectedDay, setSelectedDay] = useState('');
@@ -22,91 +22,87 @@ function App() {
 
   const translations = {
     fr: {
-      title: "L'Excellence Française",
-      subtitle: "L'Art de vivre • Prestige • Kuwait City",
+      title: "L'Éclat du Savoir",
+      subtitle: "L'Excellence Française • Kowëit • 2026",
       booking: "Calendrier des Séances",
       step1: "1. Sélectionner le Jour",
       step2: "2. Choisir l'Heure",
-      btnLevel: "✨ Déterminer mon niveau",
+      btnLevel: "Démarrarte",
       contactTitle: "Prendre Contact",
       placeholderName: "Votre Nom",
       placeholderMsg: "Comment puis-je vous aider ?",
       send: "Envoyer",
       cards: [
-        { t: "Soutien Scolaire", d: "Accompagnement d'élite pour élèves des écoles françaises.", c: "bg-[#0047AB]" },
-        { t: "Conversation", d: "Maîtrisez l'art de parler avec aisance et élégance.", c: "bg-white", pop: true },
-        { t: "Français Pro", d: "Business, Diplomatie et préparation examens.", c: "bg-[#D32F2F]" }
+        { t: "Soutien Scolaire", st: "français 2", d: "Accompagnement d'élite pour élèves des écoles françaises & bilingues & bilingues.", c: "bg-gradient-to-b from-[#0052D4] to-[#0047AB]" },
+        { t: "Conversation", d: "Maîtrisez l'art de parler avec accent de Paris. Adultes & Professionnels.", c: "bg-white", pop: true },
+        { t: "Français Pro", d: "Business, Diplomatie et préparation aux examens officiels DELF/DALF.", c: "bg-gradient-to-b from-[#E52D27] to-[#B31217]" }
       ]
     },
     en: {
-      title: "French Excellence",
-      subtitle: "The Art of Living • Prestige • Kuwait City",
-      booking: "Session Calendar",
+      title: "The Glow of Knowledge",
+      subtitle: "French Excellence • Kuwait • 2026",
+      booking: "Session Schedule",
       step1: "1. Select Day",
       step2: "2. Choose Time",
-      btnLevel: "✨ Determine my level",
+      btnLevel: "Start Now",
       contactTitle: "Get in Touch",
       placeholderName: "Your Name",
       placeholderMsg: "How can we help you?",
       send: "Send",
       cards: [
-        { t: "Academic Support", d: "Elite coaching for French school students.", c: "bg-[#0047AB]" },
-        { t: "Conversation", d: "Master the art of speaking with grace and fluidity.", c: "bg-white", pop: true },
-        { t: "Professional French", d: "Business, Diplomacy & Exam prep.", c: "bg-[#D32F2F]" }
+        { t: "Academic Support", st: "French 2", d: "Elite coaching for French & bilingual school students.", c: "bg-gradient-to-b from-[#0052D4] to-[#0047AB]" },
+        { t: "Conversation", d: "Master the art of speaking with a Paris accent. Adults & Professionals.", c: "bg-white", pop: true },
+        { t: "Professional French", d: "Business, Diplomacy & Official DELF/DALF exam prep.", c: "bg-gradient-to-b from-[#E52D27] to-[#B31217]" }
       ]
     },
     ar: {
-      title: "التميز الفرنسي",
-      subtitle: "فن الحياة • فخامة • مدينة الكويت",
+      title: "بريق المعرفة",
+      subtitle: "التميز الفرنسي • الكويت • ٢٠٢٦",
       booking: "جدول المواعيد",
       step1: "١. اختر اليوم",
       step2: "٢. اختر الوقت",
-      btnLevel: "✨ حدد مستواي الآن",
+      btnLevel: "ابدأ الآن",
       contactTitle: "اتصل بنا",
       placeholderName: "الاسم الكامل",
       placeholderMsg: "كيف يمكننا مساعدتك؟",
       send: "إرسال",
       cards: [
-        { t: "الدعم الأكاديمي", d: "تدريب متميز لطلاب المدارس الفرنسية.", c: "bg-[#0047AB]" },
-        { t: "المحادثة", d: "أتقن فن التحدث بكل رقي وانسيابية.", c: "bg-white", pop: true },
-        { t: "الفرنسية المهنية", d: "الأعمال، الدبلوماسية والامتحانات الرسمية.", c: "bg-[#D32F2F]" }
+        { t: "الدعم الأكاديمي", st: "الفرنسية ٢", d: "تدريب متميز لطلاب المدارس الفرنسية وثنائية اللغة.", c: "bg-gradient-to-b from-[#0052D4] to-[#0047AB]" },
+        { t: "المحادثة", d: "أتقن فن التحدث بلكنة باريسية. للكبار والمهنيين.", c: "bg-white", pop: true },
+        { t: "الفرنسية المهنية", d: "الأعمال، الدبلوماسية والتحضير لامتحانات DELF/DALF.", c: "bg-gradient-to-b from-[#E52D27] to-[#B31217]" }
       ]
     }
   };
 
   const t = translations[lang];
-
   const questions = [
-    { q: "Connaissez-vous l'alphabet français ?", options: ["Pas du tout", "Un peu", "Parfaitement"], points: [0, 1, 2] },
-    { q: "Savez-vous vous présenter (Nom, âge) ?", options: ["Non", "Oui", "Je peux tenir une conversation"], points: [0, 1, 2] },
-    { q: "Comprenez-vous la différence entre 'Tu' et 'Vous' ?", options: ["Non", "C'est flou", "Oui, je l'utilise"], points: [0, 1, 2] }
+    { q: "Connaissez-vous l'alphabet ?", options: ["Non", "Un peu", "Oui"], points: [0, 1, 2] },
+    { q: "Présentation ?", options: ["Non", "Oui", "Expert"], points: [0, 1, 2] },
+    { q: "Tu vs Vous ?", options: ["Non", "Flou", "Oui"], points: [0, 1, 2] }
   ];
 
   const repondreQuiz = (points) => {
     setScore(score + points);
-    if (currentQuestion + 1 < questions.length) {
-      setCurrentQuestion(currentQuestion + 1);
-    } else {
-      setQuizTermine(true);
-    }
+    if (currentQuestion + 1 < questions.length) setCurrentQuestion(currentQuestion + 1);
+    else setQuizTermine(true);
   };
 
   const days = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
   const times = ['10:00', '14:00', '16:00', '18:00', '20:00'];
 
   const envoyerWhatsApp = () => {
-    const numero = "33667569993"; 
+    const numero = "33667569993";
     const texte = `Bonjour, je suis ${nom}. %0A*Score test:* ${score}/6. %0A*Réservation:* ${selectedDay} à ${selectedTime}. %0A*Message:* ${message}`;
     window.open(`https://wa.me/${numero}?text=${texte}`, '_blank');
   };
 
   return (
-    <div className="min-h-screen bg-[#FDFCFB] text-gray-900 font-sans overflow-x-hidden">
+    <div className="min-h-screen bg-[#E5E7EB] text-gray-900 font-sans overflow-x-hidden selection:bg-[#C5A059] selection:text-white">
       
-      {/* BOUTONS LANGUES PLUS GRANDS */}
-      <div className="fixed top-28 right-8 z-[100] flex flex-col gap-4">
+      {/* SÉLECTEUR DE LANGUE */}
+      <div className="fixed top-24 right-8 z-[100] flex flex-col gap-3">
         {['fr', 'en', 'ar'].map((l) => (
-          <button key={l} onClick={() => setLang(l)} className={`w-12 h-12 rounded-full border shadow-2xl font-bold text-[10px] flex items-center justify-center transition-all ${lang === l ? 'bg-[#C5A059] text-white border-[#C5A059] scale-125' : 'bg-white text-gray-400 hover:text-black hover:border-black'}`}>
+          <button key={l} onClick={() => setLang(l)} className={`w-12 h-12 rounded-full border shadow-2xl font-bold text-[10px] flex items-center justify-center transition-all ${lang === l ? 'bg-[#C5A059] text-white border-[#C5A059]' : 'bg-white text-gray-300 hover:text-black'}`}>
             {l.toUpperCase()}
           </button>
         ))}
@@ -114,70 +110,70 @@ function App() {
 
       <Navbar setShowModal={setShowModal} />
 
-      <main className="max-w-7xl mx-auto px-6">
+      <main className="max-w-7xl mx-auto px-6 pt-20 pb-40">
         
-        {/* TITRE : GROS ESPACEMENT EN BAS (MB-40) */}
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }} className="text-center pt-24 mb-40">
-          <div className="flex justify-center items-center gap-6 mb-12 opacity-80">
-            <img src="https://flagcdn.com/w80/fr.png" alt="France" className="w-10 h-auto shadow-md" />
-            <div className="w-[1px] h-10 bg-[#C5A059]/30"></div>
-            <img src="https://flagcdn.com/w80/kw.png" alt="Kuwait" className="w-10 h-auto shadow-md" />
-          </div>
-          <h1 className="text-6xl md:text-9xl font-serif italic mb-10 tracking-tighter">{t.title}</h1>
-          <p className="text-[#C5A059] text-[12px] md:text-[14px] tracking-[0.8em] uppercase font-light">{t.subtitle}</p>
+        {/* TITRE LUXE (IMAGE) */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-40">
+          <h1 className="text-7xl md:text-[100px] font-serif italic mb-10 tracking-tight text-gray-800">
+            {t.title}
+          </h1>
         </motion.div>
 
-        {/* CARTES : GAP-16 ET MB-60 POUR BIEN SÉPARER DU TEST */}
+        {/* GRILLE DE CARTES (DÉGRADÉS & ARRONDIS COMME IMAGE) */}
         <div className="flex flex-wrap justify-center gap-16 mb-60">
           {t.cards.map((card, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.2, duration: 0.8 }}
-              whileHover={{ y: -25 }}
-              className={`${card.c} rounded-[60px] p-12 w-full max-w-[350px] min-h-[450px] flex flex-col justify-between shadow-2xl border-[3px] border-[#C5A059] relative text-left group transition-all`}
+              whileHover={{ y: -20 }}
+              className={`${card.c} rounded-[60px] p-12 w-full max-w-[350px] min-h-[480px] flex flex-col items-center justify-center shadow-2xl border-[1px] border-gray-200 relative text-center group`}
             >
               {card.pop && (
-                <div className="absolute top-10 right-10 bg-[#C5A059] text-white text-[10px] font-black px-5 py-2 rounded-full uppercase tracking-widest shadow-lg">Populaire</div>
+                <div className="absolute top-10 bg-[#C5A059] text-white text-[10px] font-black px-6 py-2 rounded-xl uppercase tracking-widest shadow-md">Populaire</div>
               )}
-              <div>
-                <div className={`w-14 h-1.5 mb-12 ${card.c === 'bg-white' ? 'bg-[#C5A059]' : 'bg-white'}`}></div>
-                <h2 className={`text-3xl font-bold mb-6 ${card.c === 'bg-white' ? 'text-gray-900' : 'text-white'}`}>{t.cards[i].t}</h2>
-                <p className={`text-base font-light leading-relaxed ${card.c === 'bg-white' ? 'text-gray-500' : 'text-white/90'}`}>{t.cards[i].d}</p>
-              </div>
-              <div className={`pt-10 border-t ${card.c === 'bg-white' ? 'border-gray-100' : 'border-white/10'} flex items-center justify-between`}>
-                <span className={`text-[11px] font-bold uppercase tracking-[0.2em] ${card.c === 'bg-white' ? 'text-[#C5A059]' : 'text-white'}`}>Prestige Service</span>
-                <span className="text-2xl group-hover:translate-x-4 transition-transform">→</span>
+              <div className="mt-10">
+                <h2 className={`text-4xl font-serif italic mb-2 ${card.c === 'bg-white' ? 'text-gray-900' : 'text-white'}`}>{card.t}</h2>
+                {card.st && <p className={`text-2xl font-serif italic mb-6 ${card.c === 'bg-white' ? 'text-gray-600' : 'text-white/80'}`}>{card.st}</p>}
+                <p className={`text-lg font-light leading-relaxed px-4 ${card.c === 'bg-white' ? 'text-gray-500' : 'text-white/90'}`}>{card.d}</p>
               </div>
             </motion.div>
           ))}
         </div>
 
-        {/* TEST DE NIVEAU : BIEN ISOLÉ PAR MY-40 (MARGE HAUT ET BAS) */}
-        <div className="my-60 text-center">
-          <motion.button 
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => {setShowQuiz(true); setQuizTermine(false); setCurrentQuestion(0); setScore(0);}} 
-            className="px-24 py-10 bg-black text-white rounded-full text-[13px] font-bold uppercase tracking-[0.5em] shadow-[0_30px_60px_rgba(0,0,0,0.3)] hover:bg-[#C5A059] transition-all"
+        {/* TESTEUR DE NIVEAU (DESIGN IMAGE : GRIS AVEC BORDURE BLEU NÉON) */}
+        <div className="max-w-5xl mx-auto mb-60">
+          <motion.div 
+            className="bg-[#C0C0C2] rounded-[70px] p-16 border-[6px] border-[#59B2FF] shadow-[0_0_30px_rgba(89,178,255,0.4)] text-center relative"
           >
-            {t.btnLevel}
-          </motion.button>
+            <h2 className="text-5xl font-serif italic text-white mb-12 text-left">Testez vour Niveau</h2>
+            
+            <div className="flex justify-center gap-8 mb-16">
+              {['Debalartt', 'Moyen', 'Rexullat'].map((btn, idx) => (
+                <button key={idx} className="px-10 py-4 rounded-full border-2 border-white text-white font-serif italic text-xl bg-white/10 hover:bg-white hover:text-gray-600 transition-all">
+                  {btn}
+                </button>
+              ))}
+            </div>
+
+            <div className="flex justify-start gap-3 mb-20">
+               {[1,2].map(i => <div key={i} className="w-4 h-4 rounded-full bg-blue-600"></div>)}
+               {[1,2,3,4].map(i => <div key={i} className="w-4 h-4 rounded-full bg-[#EBCB8B]"></div>)}
+            </div>
+
+            <button 
+              onClick={() => {setShowQuiz(true); setQuizTermine(false); setCurrentQuestion(0);}} 
+              className="px-24 py-6 bg-[#007AFF] text-white rounded-[30px] text-3xl font-serif italic shadow-xl hover:bg-blue-600 transition-all"
+            >
+              {t.btnLevel}
+            </button>
+          </motion.div>
         </div>
 
-        {/* AGENDA : TITRE SANS "CONTACT" ET MARGE MB-40 */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="bg-white rounded-[80px] p-16 md:p-32 shadow-xl border border-gray-100 max-w-6xl mx-auto mb-40 relative"
-        >
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-1.5 bg-[#C5A059]"></div>
-          <h2 className="text-5xl md:text-6xl font-serif italic mb-24 text-center text-gray-900">{t.booking}</h2>
+        {/* AGENDA (SANS MOT CONTACT) */}
+        <motion.div className="bg-white rounded-[80px] p-16 md:p-32 shadow-sm border border-gray-100 max-w-6xl mx-auto mb-40 relative">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-2 bg-[#C5A059]"></div>
+          <h2 className="text-6xl font-serif italic mb-24 text-center">{t.booking}</h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-24 text-left">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-24">
             <div>
               <p className="text-[#C5A059] text-[12px] font-bold uppercase tracking-[0.4em] mb-12 border-l-4 border-[#C5A059] pl-8">{t.step1}</p>
               <div className="flex flex-wrap gap-5">
@@ -198,14 +194,13 @@ function App() {
         </motion.div>
       </main>
 
-      {/* FOOTER ESPACÉ */}
-      <footer className="py-24 text-center text-[11px] text-gray-300 tracking-[0.7em] uppercase font-light border-t border-gray-50">
-        Excellence Française • Kuwait • 2026
+      <footer className="pb-24 text-center text-[12px] text-gray-400 tracking-[0.6em] uppercase font-light">
+        {t.subtitle}
       </footer>
 
-      {/* QUIZ ET MODALE RESTENT LES MÊMES (BALISES NON SUPPRIMÉES) */}
       <Quiz showQuiz={showQuiz} setShowQuiz={setShowQuiz} quizTermine={quizTermine} currentQuestion={currentQuestion} questions={questions} repondreQuiz={repondreQuiz} score={score} setShowModal={setShowModal} />
-
+      
+      {/* MODALE RESTE IDENTIQUE AUX BALISES PRÉCÉDENTES */}
       <AnimatePresence>
         {showModal && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[150] flex items-center justify-center p-6 bg-white/95 backdrop-blur-3xl">
