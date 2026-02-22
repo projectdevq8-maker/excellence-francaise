@@ -15,7 +15,6 @@ function App() {
   const [score, setScore] = useState(0);
   const [quizTermine, setQuizTermine] = useState(false);
 
-  // Gère la direction du texte (RTL pour l'arabe)
   useEffect(() => {
     document.dir = lang === 'ar' ? 'rtl' : 'ltr';
   }, [lang]);
@@ -102,7 +101,6 @@ function App() {
   return (
     <div className={`min-h-screen bg-[#FDFCFB] text-gray-900 font-sans overflow-x-hidden ${lang === 'ar' ? 'rtl' : 'ltr'}`}>
       
-      {/* SÉLECTEUR DE LANGUE */}
       <div className={`fixed top-24 z-[60] flex flex-col gap-2 ${lang === 'ar' ? 'left-6' : 'right-6'}`}>
         {['fr', 'en', 'ar'].map((l) => (
           <button 
@@ -117,7 +115,7 @@ function App() {
 
       <Navbar setShowModal={setShowModal} />
 
-      <main className="max-w-6xl mx-auto px-6 pt-12 pb-20 text-center">
+      <main className="max-w-7xl mx-auto px-6 pt-12 pb-20 text-center">
         
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <div className="flex justify-center items-center gap-6 mb-8 opacity-80">
@@ -127,65 +125,66 @@ function App() {
           </div>
 
           <h1 className="text-5xl md:text-8xl font-serif italic mb-6 tracking-tight leading-tight">{t.title}</h1>
-          <p className="text-[#C5A059] text-[10px] md:text-[12px] tracking-[0.6em] uppercase font-light mb-20">{t.subtitle}</p>
+          <p className="text-[#C5A059] text-[10px] md:text-[12px] tracking-[0.6em] uppercase font-light mb-24">{t.subtitle}</p>
         </motion.div>
 
-        {/* GRILLE DE CARTES CORRIGÉE */}
-        <div className="flex flex-wrap justify-center gap-8 mb-32">
+        {/* GRILLE DE CARTES : ESPACEMENT ET SHADOW OPTIMISÉS */}
+        <div className="flex flex-wrap justify-center gap-12 mb-40 max-w-7xl mx-auto">
           {t.cards.map((card, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.2 }}
-              whileHover={{ y: -15 }}
-              className={`${card.c} rounded-[45px] p-10 w-full max-w-[320px] min-h-[400px] flex flex-col justify-between shadow-2xl border-2 border-[#C5A059] relative text-left group overflow-hidden`}
+              whileHover={{ y: -20, boxShadow: "0 30px 60px -12px rgba(197, 160, 89, 0.15)" }}
+              className={`${card.c} rounded-[50px] p-12 w-full md:w-[360px] min-h-[480px] flex flex-col justify-between shadow-xl border border-[#C5A059]/30 relative text-left group transition-all duration-500`}
             >
               {card.pop && (
-                <div className="absolute top-6 right-8 bg-[#C5A059] text-white text-[8px] font-bold px-3 py-1 rounded-full uppercase">Populaire</div>
+                <div className="absolute top-8 right-10 bg-[#C5A059] text-white text-[9px] font-bold px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg">Populaire</div>
               )}
               <div>
-                <div className={`w-10 h-1 mb-8 ${card.c === 'bg-white' ? 'bg-[#C5A059]' : 'bg-white'}`}></div>
-                <h2 className={`text-2xl font-bold mb-4 ${card.c === 'bg-white' ? 'text-gray-900' : 'text-white'}`}>{card.t}</h2>
-                <p className={`text-sm font-light leading-relaxed ${card.c === 'bg-white' ? 'text-gray-500' : 'text-white/80'}`}>{card.d}</p>
+                <div className={`w-12 h-[2px] mb-10 ${card.c === 'bg-white' ? 'bg-[#C5A059]' : 'bg-white'}`}></div>
+                <h2 className={`text-3xl font-bold mb-6 ${card.c === 'bg-white' ? 'text-gray-900' : 'text-white'}`}>{card.t}</h2>
+                <p className={`text-base font-light leading-loose ${card.c === 'bg-white' ? 'text-gray-500' : 'text-white/80'}`}>{card.d}</p>
               </div>
-              <div className={`pt-6 border-t ${card.c === 'bg-white' ? 'border-gray-100' : 'border-white/10'} flex items-center justify-between`}>
-                <span className={`text-[10px] font-bold uppercase tracking-widest ${card.c === 'bg-white' ? 'text-[#C5A059]' : 'text-white'}`}>Prestige</span>
-                <span className="text-xl group-hover:translate-x-2 transition-transform">→</span>
+              <div className={`pt-8 border-t ${card.c === 'bg-white' ? 'border-gray-100' : 'border-white/10'} flex items-center justify-between`}>
+                <span className={`text-[10px] font-bold uppercase tracking-[0.2em] ${card.c === 'bg-white' ? 'text-[#C5A059]' : 'text-white'}`}>Prestige</span>
+                <span className={`text-2xl transition-transform duration-300 group-hover:translate-x-3 ${card.c === 'bg-white' ? 'text-[#C5A059]' : 'text-white'}`}>→</span>
               </div>
             </motion.div>
           ))}
         </div>
 
         {/* CTA QUIZ */}
-        <div className="mb-40">
+        <div className="mb-48">
           <motion.button 
-            whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.05, backgroundColor: "#C5A059" }} whileTap={{ scale: 0.95 }}
             onClick={() => {setShowQuiz(true); setQuizTermine(false); setCurrentQuestion(0); setScore(0);}} 
-            className="px-16 py-6 bg-black text-white rounded-full text-[11px] font-bold uppercase tracking-[0.4em] shadow-2xl hover:bg-[#C5A059] transition-all"
+            className="px-20 py-7 bg-black text-white rounded-full text-[12px] font-bold uppercase tracking-[0.5em] shadow-2xl transition-all duration-300 border border-white/10"
           >
             {t.btnLevel}
           </motion.button>
         </div>
 
-        {/* AGENDA */}
-        <motion.div className="bg-white rounded-[60px] p-12 md:p-20 shadow-sm border border-gray-100 max-w-5xl mx-auto mb-20 relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-2 bg-[#C5A059]"></div>
-          <h2 className="text-4xl font-serif italic mb-16">{t.booking}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 text-left">
+        {/* AGENDA : LOOK HAUTE COUTURE */}
+        <motion.div className="bg-white rounded-[80px] p-16 md:p-24 shadow-2xl border border-gray-50 max-w-6xl mx-auto mb-32 relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-[6px] bg-[#C5A059]"></div>
+          <h2 className="text-4xl md:text-5xl font-serif italic mb-20 text-gray-900">{t.booking}</h2>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 text-left">
             <div>
-              <p className="text-[#C5A059] text-[10px] font-bold uppercase mb-8 border-l-2 border-[#C5A059] pl-4">{t.step1}</p>
-              <div className="flex flex-wrap gap-3">
+              <p className="text-[#C5A059] text-[11px] font-bold uppercase tracking-[0.3em] mb-10 border-l-2 border-[#C5A059] pl-6">{t.step1}</p>
+              <div className="flex flex-wrap gap-4">
                 {days.map(day => (
-                  <button key={day} onClick={() => setSelectedDay(day)} className={`px-6 py-3 rounded-2xl text-[11px] font-bold transition-all border ${selectedDay === day ? 'bg-black text-white border-black shadow-lg' : 'bg-white border-gray-200 hover:border-black'}`}>{day}</button>
+                  <button key={day} onClick={() => setSelectedDay(day)} className={`px-8 py-4 rounded-2xl text-[12px] font-bold transition-all border-2 ${selectedDay === day ? 'bg-black text-white border-black shadow-2xl scale-105' : 'bg-white border-gray-100 text-gray-400 hover:border-[#C5A059] hover:text-[#C5A059]'}`}>{day}</button>
                 ))}
               </div>
             </div>
             <div>
-              <p className="text-[#C5A059] text-[10px] font-bold uppercase mb-8 border-l-2 border-[#C5A059] pl-4">{t.step2}</p>
-              <div className="flex flex-wrap gap-3">
+              <p className="text-[#C5A059] text-[11px] font-bold uppercase tracking-[0.3em] mb-10 border-l-2 border-[#C5A059] pl-6">{t.step2}</p>
+              <div className="flex flex-wrap gap-4">
                 {times.map(time => (
-                  <button key={time} onClick={() => setSelectedTime(time)} className={`px-6 py-3 rounded-2xl text-[11px] font-bold transition-all border ${selectedTime === time ? 'bg-black text-white border-black shadow-lg' : 'bg-white border-gray-200 hover:border-black'}`}>{time}</button>
+                  <button key={time} onClick={() => setSelectedTime(time)} className={`px-8 py-4 rounded-2xl text-[12px] font-bold transition-all border-2 ${selectedTime === time ? 'bg-black text-white border-black shadow-2xl scale-105' : 'bg-white border-gray-100 text-gray-400 hover:border-[#C5A059] hover:text-[#C5A059]'}`}>{time}</button>
                 ))}
               </div>
             </div>
@@ -204,15 +203,15 @@ function App() {
 
       <AnimatePresence>
         {showModal && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-white/90 backdrop-blur-xl">
-            <motion.div initial={{ y: 100, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="bg-white p-12 rounded-[50px] border border-gray-100 shadow-3xl max-w-lg w-full text-left relative">
-              <button onClick={() => setShowModal(false)} className="absolute top-10 right-10 text-gray-400">✕</button>
-              <h2 className="text-3xl font-serif italic mb-8">{t.contactTitle}</h2>
-              <div className="space-y-6">
-                <input type="text" placeholder={t.placeholderName} onChange={(e) => setNom(e.target.value)} className="w-full py-4 border-b outline-none focus:border-[#C5A059] text-xl font-light" />
-                <textarea placeholder={t.placeholderMsg} onChange={(e) => setMessage(e.target.value)} className="w-full py-4 border-b h-32 outline-none focus:border-[#C5A059] resize-none text-xl font-light"></textarea>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-white/95 backdrop-blur-2xl">
+            <motion.div initial={{ y: 100, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="bg-white p-16 rounded-[60px] border border-gray-100 shadow-3xl max-w-xl w-full text-left relative">
+              <button onClick={() => setShowModal(false)} className="absolute top-12 right-12 text-gray-300 hover:text-black transition-colors">✕</button>
+              <h2 className="text-4xl font-serif italic mb-10 text-gray-900">{t.contactTitle}</h2>
+              <div className="space-y-8">
+                <input type="text" placeholder={t.placeholderName} onChange={(e) => setNom(e.target.value)} className="w-full py-5 border-b-2 border-gray-50 outline-none focus:border-[#C5A059] text-xl font-light transition-all placeholder:text-gray-300" />
+                <textarea placeholder={t.placeholderMsg} onChange={(e) => setMessage(e.target.value)} className="w-full py-5 border-b-2 border-gray-50 h-32 outline-none focus:border-[#C5A059] resize-none text-xl font-light transition-all placeholder:text-gray-300"></textarea>
               </div>
-              <button onClick={envoyerWhatsApp} className="w-full mt-10 py-6 bg-black text-white rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-[#C5A059] transition-all">
+              <button onClick={envoyerWhatsApp} className="w-full mt-12 py-7 bg-black text-white rounded-full text-[12px] font-bold uppercase tracking-[0.4em] hover:bg-[#C5A059] transition-all duration-500 shadow-2xl">
                 {t.send}
               </button>
             </motion.div>
@@ -220,8 +219,8 @@ function App() {
         )}
       </AnimatePresence>
 
-      <footer className="pb-16 text-center text-[9px] text-gray-300 tracking-[0.5em] uppercase font-light">
-        Excellence Française • 2026
+      <footer className="pb-16 text-center text-[10px] text-gray-400 tracking-[0.6em] uppercase font-light">
+        &copy; Excellence Française • 2026 • Kuwait City
       </footer>
     </div>
   );
