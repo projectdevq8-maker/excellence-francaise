@@ -1,7 +1,22 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import Navbar from './components/Navbar';
+import Quiz from './components/Quiz';
+
+// Ajout du CSS global directement pour garantir le box-sizing
+const globalStyles = `
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  html, body {
+    overflow-x: hidden;
+  }
+`;
 
 function App() {
+  const [lang, setLang] = useState('fr');
   const [showModal, setShowModal] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
   const [selectedDay, setSelectedDay] = useState('');
@@ -9,174 +24,167 @@ function App() {
   const [nom, setNom] = useState('');
   const [message, setMessage] = useState('');
 
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [score, setScore] = useState(0);
-  const [quizTermine, setQuizTermine] = useState(false);
+  useEffect(() => {
+    document.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  }, [lang]);
 
-  const questions = [
-    { q: "Connaissez-vous l'alphabet français ?", options: ["Pas du tout", "Un peu", "Parfaitement"], points: [0, 1, 2] },
-    { q: "Savez-vous vous présenter (Nom, âge) ?", options: ["Non", "Oui", "Je peux tenir une conversation"], points: [0, 1, 2] },
-    { q: "Comprenez-vous la différence entre 'Tu' et 'Vous' ?", options: ["Non", "C'est flou", "Oui, je l'utilise"], points: [0, 1, 2] }
-  ];
-
-  const repondreQuiz = (points) => {
-    setScore(score + points);
-    if (currentQuestion + 1 < questions.length) {
-      setCurrentQuestion(currentQuestion + 1);
-    } else {
-      setQuizTermine(true);
+  const content = {
+    fr: {
+      title: "L'Excellence Française",
+      subtitle: "L'Art de vivre • Prestige • Kuwait City",
+      cards: [
+        { title: "Soutien Scolaire", desc: "Accompagnement d'élite pour élèves des écoles françaises.", bgColor: "bg-[#0047AB]", textColor: "text-white" },
+        { title: "Conversation", desc: "Maîtrisez l'art de parler avec aisance et élégance parisienne.", bgColor: "bg-white", textColor: "text-gray-900" },
+        { title: "Français Pro", desc: "Business, Diplomatie et préparation examens.", bgColor: "bg-[#D32F2F]", textColor: "text-white" }
+      ],
+      testBtn: "✨ Testez votre niveau",
+      booking: "Réserver une séance",
+      step1: "1. Jour",
+      step2: "2. Heure",
+      send: "Envoyer la demande",
+      footer: "L'Excellence Française • 2026"
+    },
+    en: {
+      title: "French Excellence",
+      subtitle: "The Art of Living • Prestige • Kuwait City",
+      cards: [
+        { title: "Academic Support", desc: "Elite coaching for French school students.", bgColor: "bg-[#0047AB]", textColor: "text-white" },
+        { title: "Conversation", desc: "Master the art of speaking with grace and fluidity.", bgColor: "bg-white", textColor: "text-gray-900" },
+        { title: "Professional French", desc: "Business, Diplomacy & Official Exams.", bgColor: "bg-[#D32F2F]", textColor: "text-white" }
+      ],
+      testBtn: "✨ Test your level",
+      booking: "Book a session",
+      step1: "1. Day",
+      step2: "2. Time",
+      send: "Send Request",
+      footer: "French Excellence • 2026"
+    },
+    ar: {
+      title: "التميز الفرنسي",
+      subtitle: "فن الحياة • فخامة • مدينة الكويت",
+      cards: [
+        { title: "الدعم الأكاديمي", desc: "تدريب متميز لطلاب المدارس الفرنسية.", bgColor: "bg-[#0047AB]", textColor: "text-white" },
+        { title: "المحادثة", desc: "أتقن فن التحدث بكل رقي وانسيابية.", bgColor: "bg-white", textColor: "text-gray-900" },
+        { title: "الفرنسية المهنية", desc: "الأعمال، الدبلوماسية والامتحانات الرسمية.", bgColor: "bg-[#D32F2F]", textColor: "text-white" }
+      ],
+      testBtn: "✨ ابدأ اختبار المستوى",
+      booking: "حجز موعد",
+      step1: "١. اليوم",
+      step2: "٢. الوقت",
+      send: "إرسال الطلب",
+      footer: "التميز الفرنسي • ٢٠٢٦"
     }
   };
 
-  const days = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
-  const times = ['10:00', '14:00', '16:00', '18:00', '20:00'];
+  const t = content[lang];
+  const isAr = lang === 'ar';
 
   const envoyerWhatsApp = () => {
-    const numero = "965XXXXXXX"; // Remplace par ton numéro
-    const texte = `Bonjour, je suis ${nom}. Score test: ${score}/6. Réservation: ${selectedDay} à ${selectedTime}. Msg: ${message}`;
+    const numero = "33667569993";
+    const texte = `Bonjour. Nom: ${nom}. RDV: ${selectedDay} à ${selectedTime}. Langue: ${lang}. Message: ${message}`;
     window.open(`https://wa.me/${numero}?text=${encodeURIComponent(texte)}`, '_blank');
   };
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 font-sans overflow-x-hidden">
-      {/* NAV */}
-      <motion.nav initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="flex justify-between items-center p-6 max-w-6xl mx-auto">
-        <div className="flex items-center gap-3 text-left">
-          <div className="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-[8px] font-bold">EF</div>
-          <div className="flex flex-col">
-            <span className="text-[9px] tracking-[0.3em] font-black uppercase leading-none text-left">L'Excellence</span>
-            <span className="text-[9px] tracking-[0.3em] font-black uppercase leading-none mt-1 text-left">Française</span>
-          </div>
-        </div>
-        <button onClick={() => setShowModal(true)} className="px-6 py-2 border border-black rounded-full text-[9px] font-bold uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-all">Contact</button>
-      </motion.nav>
-
-      <main className="max-w-5xl mx-auto px-6 pt-6 pb-20 text-center">
-        {/* DRAPEAUX */}
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="flex justify-center items-center gap-4 mb-6">
-          <img src="https://flagcdn.com/w80/fr.png" alt="France" className="w-10 h-auto shadow-sm" />
-          <span className="text-gray-200 font-light text-2xl">|</span>
-          <img src="https://flagcdn.com/w80/kw.png" alt="Kuwait" className="w-10 h-auto shadow-sm" />
-        </motion.div>
-
-        <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="text-5xl md:text-6xl font-serif italic mb-4 tracking-tight">L'Excellence Française</motion.h1>
-        <p className="text-gray-400 text-[9px] tracking-[0.4em] uppercase font-light mb-12 text-center">L'art de vivre • Prestige • Kuwait</p>
-
-        {/* CARTES SERVICES */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20 max-w-4xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="bg-[#0047AB] rounded-[30px] p-6 text-white min-h-[280px] flex flex-col justify-between shadow-xl border-2 border-[#C5A059] text-left">
-            <h2 className="text-xl font-bold mb-2">Soutien Scolaire</h2>
-            <p className="text-[11px] opacity-80 font-light">Accompagnement d'élite pour élèves des écoles françaises.</p>
-            <div className="text-[8px] font-bold uppercase tracking-widest">Détails →</div>
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }} className="bg-white rounded-[30px] p-6 text-gray-900 min-h-[280px] flex flex-col justify-between shadow-lg border-2 border-[#C5A059] transform scale-105 z-10 relative text-left">
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#C5A059] text-white text-[7px] font-bold px-3 py-1 rounded-full uppercase tracking-[0.2em]">Populaire</div>
-            <h2 className="text-xl font-bold mb-2 text-[#C5A059]">Conversation</h2>
-            <p className="text-[11px] text-gray-500 italic">Maîtrisez l'art de la conversation avec aisance et élégance.</p>
-            <div className="text-[#C5A059] text-[8px] font-bold uppercase tracking-widest">Réserver →</div>
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1 }} className="bg-[#D32F2F] rounded-[30px] p-6 text-white min-h-[280px] flex flex-col justify-between shadow-xl border-2 border-[#C5A059] text-left">
-            <h2 className="text-xl font-bold mb-2">Français Pro</h2>
-            <p className="text-[11px] opacity-80 font-light">Business, Diplomatie et préparation examens.</p>
-            <div className="text-[8px] font-bold uppercase tracking-widest">Détails →</div>
-          </motion.div>
-        </div>
-
-        {/* SECTION MÉTHODE / ENGAGEMENT */}
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="py-16 max-w-4xl mx-auto border-t border-gray-50">
-          <h2 className="text-[10px] tracking-[0.4em] uppercase text-gray-400 mb-12 text-center">Notre Engagement</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
-            <div>
-              <h3 className="text-[#C5A059] text-[9px] font-bold uppercase mb-2 italic">Sur-mesure</h3>
-              <p className="text-[11px] text-gray-500 leading-relaxed">Chaque élève suit un programme adapté à ses objectifs personnels et professionnels.</p>
-            </div>
-            <div>
-              <h3 className="text-[#C5A059] text-[9px] font-bold uppercase mb-2 italic">Excellence</h3>
-              <p className="text-[11px] text-gray-500 leading-relaxed">Une pédagogie française authentique alliant rigueur académique et plaisir d'apprendre.</p>
-            </div>
-            <div>
-              <h3 className="text-[#C5A059] text-[9px] font-bold uppercase mb-2 italic">Prestige</h3>
-              <p className="text-[11px] text-gray-500 leading-relaxed">Un service exclusif pour une maîtrise parfaite de la langue dans les plus hautes sphères.</p>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* BOUTON TEST - MAINTENANT CENTRÉ EN DESSOUS DE L'ENGAGEMENT */}
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} className="flex justify-center mb-20">
-          <button onClick={() => {setShowQuiz(true); setQuizTermine(false); setCurrentQuestion(0); setScore(0);}} className="group px-10 py-4 bg-white border border-[#C5A059] rounded-full transition-all hover:bg-black hover:scale-105 active:scale-95">
-            <span className="text-[#C5A059] group-hover:text-white text-[10px] font-bold uppercase tracking-[0.3em]">✨ Testez votre Niveau</span>
+    <div className="min-h-screen bg-white text-gray-900 font-sans">
+      <style>{globalStyles}</style>
+      
+      {/* SÉLECTEUR DE LANGUE */}
+      <div className="fixed top-24 right-6 z-[60] flex flex-col gap-2">
+        {['fr', 'en', 'ar'].map((l) => (
+          <button key={l} onClick={() => setLang(l)} className={`w-10 h-10 rounded-full border shadow-lg font-bold text-[10px] flex items-center justify-center transition-all ${lang === l ? 'bg-[#C5A059] text-white' : 'bg-white text-gray-300'}`}>
+            {l.toUpperCase()}
           </button>
-        </motion.div>
+        ))}
+      </div>
 
-        {/* CALENDRIER */}
-        <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} className="bg-gray-900 rounded-[30px] p-6 text-white shadow-2xl border-b-4 border-[#C5A059] max-w-3xl mx-auto">
-          <h2 className="text-lg tracking-[0.2em] uppercase font-extralight mb-6 text-center">Réserver une séance</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
-            <div>
-              <p className="text-[#C5A059] text-[8px] font-bold uppercase tracking-[0.2em] mb-3">1. Jour</p>
+      <Navbar setShowModal={setShowModal} />
+
+      <main className="max-w-7xl mx-auto px-4 pt-12 pb-32 flex flex-col items-center">
+        
+        {/* HERO */}
+        <div className="mb-16 text-center w-full">
+          <h1 className="text-4xl md:text-8xl font-serif italic mb-6 break-words">{t.title}</h1>
+          <p className="text-[#C5A059] text-[10px] tracking-[0.4em] uppercase font-light leading-relaxed">{t.subtitle}</p>
+        </div>
+
+        {/* SECTION DES CARTES - ZÉRO HEIGHT FIXE */}
+        <div className="flex flex-wrap justify-center gap-6 w-full max-w-6xl mb-24">
+          {t.cards.map((card, i) => (
+            <motion.div
+              key={i}
+              className={`p-8 rounded-[35px] border-2 border-[#C5A059] ${card.bgColor} ${card.textColor} 
+              flex flex-col w-full md:w-[340px] h-auto min-h-[300px] shadow-xl relative transition-all`}
+            >
+              <div className={isAr ? 'text-right' : 'text-left'}>
+                <div className={`w-12 h-1 mb-6 ${card.bgColor === 'bg-white' ? 'bg-[#C5A059]' : 'bg-white'}`}></div>
+                <h2 className="text-2xl font-bold mb-4">{card.title}</h2>
+                <p className="text-base opacity-90 leading-relaxed mb-6">{card.desc}</p>
+              </div>
+              <div className={`mt-auto pt-6 border-t border-current/10 flex items-center justify-between ${isAr ? 'flex-row-reverse' : ''}`}>
+                <span className="text-[10px] font-bold uppercase tracking-widest">Prestige</span>
+                <span className="text-xl">→</span>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* BOUTON TEST */}
+        <button 
+          onClick={() => setShowQuiz(true)}
+          className="mb-24 px-10 py-5 bg-black text-white rounded-full text-[11px] font-bold uppercase tracking-[0.3em] hover:bg-[#C5A059] transition-all shadow-xl"
+        >
+          {t.testBtn}
+        </button>
+
+        {/* AGENDA - ZÉRO HEIGHT FIXE */}
+        <div className="w-full max-w-4xl bg-[#FBFBFB] rounded-[40px] p-8 md:p-16 border border-gray-100 shadow-inner flex flex-col items-center">
+          <h2 className="text-3xl font-serif italic mb-12 text-center">{t.booking}</h2>
+          
+          <div className="w-full flex flex-col md:flex-row gap-12 text-left">
+            <div className="flex-1">
+              <p className="text-[#C5A059] text-[10px] font-bold uppercase mb-6 tracking-widest">{t.step1}</p>
               <div className="flex flex-wrap gap-2">
-                {days.map(day => (
-                  <button key={day} onClick={() => setSelectedDay(day)} className={`px-3 py-1.5 rounded-full text-[8px] font-bold transition-all ${selectedDay === day ? 'bg-[#C5A059] text-white' : 'bg-white/5 text-white/50 hover:bg-white/10'}`}>{day}</button>
+                {['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'].map(d => (
+                  <button key={d} onClick={() => setSelectedDay(d)} className={`px-4 py-2 rounded-xl border text-sm transition-all ${selectedDay === d ? 'bg-black text-white' : 'bg-white border-gray-200'}`}>{d}</button>
                 ))}
               </div>
             </div>
-            <div>
-              <p className="text-[#C5A059] text-[8px] font-bold uppercase tracking-[0.2em] mb-3">2. Heure</p>
+            
+            <div className="flex-1">
+              <p className="text-[#C5A059] text-[10px] font-bold uppercase mb-6 tracking-widest">{t.step2}</p>
               <div className="flex flex-wrap gap-2">
-                {times.map(time => (
-                  <button key={time} onClick={() => setSelectedTime(time)} className={`px-3 py-1.5 rounded-full text-[8px] font-bold transition-all ${selectedTime === time ? 'bg-[#C5A059] text-white' : 'bg-white/5 text-white/50 hover:bg-white/10'}`}>{time}</button>
+                {['10:00', '14:00', '16:00', '18:00', '20:00'].map(h => (
+                  <button key={h} onClick={() => setSelectedTime(h)} className={`px-4 py-2 rounded-xl border text-sm transition-all ${selectedTime === h ? 'bg-black text-white' : 'bg-white border-gray-200'}`}>{h}</button>
                 ))}
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </main>
 
-      <footer className="pb-8 text-center text-[8px] text-gray-300 tracking-[0.3em] uppercase font-light">L'Excellence Française • 2026</footer>
+      <footer className="py-12 text-center text-[9px] text-gray-400 tracking-[0.4em] uppercase font-light">
+        {t.footer}
+      </footer>
 
-      {/* MODALE QUIZ */}
-      {showQuiz && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-          <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-white rounded-[30px] p-8 max-w-md w-full border-2 border-[#C5A059] shadow-2xl text-center">
-            {!quizTermine ? (
-              <>
-                <p className="text-[#C5A059] text-[10px] font-bold uppercase mb-4">Question {currentQuestion + 1} / 3</p>
-                <h2 className="text-xl font-serif italic mb-8">{questions[currentQuestion].q}</h2>
-                <div className="flex flex-col gap-3">
-                  {questions[currentQuestion].options.map((opt, idx) => (
-                    <button key={idx} onClick={() => repondreQuiz(questions[currentQuestion].points[idx])} className="py-4 border border-gray-100 rounded-2xl hover:bg-gray-50 hover:border-[#C5A059] transition-all text-sm font-medium">{opt}</button>
-                  ))}
-                </div>
-              </>
-            ) : (
-              <>
-                <h2 className="text-3xl font-serif italic mb-4">Analyse Terminée</h2>
-                <p className="text-gray-500 mb-8 text-sm">Votre score : <span className="text-[#C5A059] font-bold">{score} / 6</span></p>
-                <button onClick={() => {setShowQuiz(false); setShowModal(true);}} className="w-full py-4 bg-black text-white rounded-full text-[10px] font-bold uppercase tracking-widest">Réserver mon programme</button>
-              </>
-            )}
+      {/* MODAL CONTACT SANS DÉBORDEMENT */}
+      <AnimatePresence>
+        {showModal && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-white/95 backdrop-blur-md">
+            <motion.div initial={{ y: 30 }} animate={{ y: 0 }} className="bg-white p-8 md:p-12 rounded-[40px] border border-gray-100 shadow-3xl max-w-lg w-full h-auto overflow-y-auto max-h-[90vh]">
+              <h2 className="text-2xl font-serif italic mb-8">Contact</h2>
+              <input type="text" placeholder="Nom Complet" onChange={(e)=>setNom(e.target.value)} className="w-full py-4 border-b border-gray-200 outline-none focus:border-[#C5A059] mb-6 text-lg" />
+              <textarea placeholder="Votre Message" onChange={(e)=>setMessage(e.target.value)} className="w-full py-4 border-b border-gray-200 h-24 mb-10 outline-none focus:border-[#C5A059] resize-none text-lg"></textarea>
+              <div className="flex flex-col gap-4">
+                <button onClick={envoyerWhatsApp} className="w-full py-5 bg-black text-white rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg">WhatsApp</button>
+                <button onClick={() => setShowModal(false)} className="text-[10px] font-bold uppercase text-gray-300">Fermer</button>
+              </div>
+            </motion.div>
           </motion.div>
-        </motion.div>
-      )}
+        )}
+      </AnimatePresence>
 
-      {/* MODALE CONTACT */}
-      {showModal && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <motion.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="bg-white rounded-[30px] p-8 max-w-sm w-full border-2 border-[#C5A059] shadow-2xl text-left">
-            <h2 className="text-2xl font-serif italic mb-4">Contact Privé</h2>
-            <div className="space-y-3">
-              <input type="text" placeholder="Nom" onChange={(e) => setNom(e.target.value)} className="w-full p-3 border border-gray-100 rounded-xl bg-gray-50 text-sm outline-none focus:border-[#C5A059]" />
-              <textarea placeholder="Votre message" onChange={(e) => setMessage(e.target.value)} className="w-full p-3 border border-gray-100 rounded-xl bg-gray-50 h-24 text-sm outline-none focus:border-[#C5A059]"></textarea>
-            </div>
-            <div className="flex gap-4 mt-6">
-              <button onClick={() => setShowModal(false)} className="flex-1 text-[9px] font-bold uppercase tracking-widest text-gray-400">Annuler</button>
-              <button onClick={envoyerWhatsApp} className="flex-1 py-3 bg-[#C5A059] text-white rounded-full text-[9px] font-bold uppercase tracking-widest shadow-lg">Envoyer</button>
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
+      <Quiz showQuiz={showQuiz} setShowQuiz={setShowQuiz} quizTermine={false} currentQuestion={0} questions={[]} repondreQuiz={()=>{}} score={0} setShowModal={setShowModal} />
     </div>
   );
 }
