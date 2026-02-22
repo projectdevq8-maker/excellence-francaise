@@ -15,7 +15,6 @@ function App() {
   const [score, setScore] = useState(0);
   const [quizTermine, setQuizTermine] = useState(false);
 
-  // Gère la direction du texte (RTL pour l'arabe)
   useEffect(() => {
     document.dir = lang === 'ar' ? 'rtl' : 'ltr';
   }, [lang]);
@@ -117,7 +116,7 @@ function App() {
 
       <Navbar setShowModal={setShowModal} />
 
-      <main className="max-w-6xl mx-auto px-6 pt-12 pb-20 text-center">
+      <main className="max-w-7xl mx-auto px-6 pt-12 pb-20 text-center">
         
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <div className="flex justify-center items-center gap-6 mb-8 opacity-80">
@@ -130,8 +129,8 @@ function App() {
           <p className="text-[#C5A059] text-[10px] md:text-[12px] tracking-[0.6em] uppercase font-light mb-20">{t.subtitle}</p>
         </motion.div>
 
-        {/* GRILLE DE CARTES CORRIGÉE */}
-        <div className="flex flex-wrap justify-center gap-8 mb-32">
+        {/* GRILLE DE CARTES - MODIFIÉE POUR LARGEUR ORDI */}
+        <div className="flex flex-wrap justify-center gap-10 mb-32 w-full">
           {t.cards.map((card, i) => (
             <motion.div
               key={i}
@@ -139,7 +138,7 @@ function App() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.2 }}
               whileHover={{ y: -15 }}
-              className={`${card.c} rounded-[45px] p-10 w-full max-w-[320px] min-h-[400px] flex flex-col justify-between shadow-2xl border-2 border-[#C5A059] relative text-left group overflow-hidden`}
+              className={`${card.c} rounded-[45px] p-10 w-full md:w-[350px] min-h-[450px] flex flex-col justify-between shadow-2xl border-2 border-[#C5A059] relative text-left group overflow-hidden`}
             >
               {card.pop && (
                 <div className="absolute top-6 right-8 bg-[#C5A059] text-white text-[8px] font-bold px-3 py-1 rounded-full uppercase">Populaire</div>
@@ -168,24 +167,24 @@ function App() {
           </motion.button>
         </div>
 
-        {/* AGENDA */}
-        <motion.div className="bg-white rounded-[60px] p-12 md:p-20 shadow-sm border border-gray-100 max-w-5xl mx-auto mb-20 relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-2 bg-[#C5A059]"></div>
-          <h2 className="text-4xl font-serif italic mb-16">{t.booking}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 text-left">
-            <div>
-              <p className="text-[#C5A059] text-[10px] font-bold uppercase mb-8 border-l-2 border-[#C5A059] pl-4">{t.step1}</p>
-              <div className="flex flex-wrap gap-3">
+        {/* AGENDA - MODIFIÉ POUR PLUS D'ESPACE */}
+        <motion.div className="bg-white rounded-[60px] p-10 md:p-24 shadow-2xl border border-gray-100 max-w-6xl mx-auto mb-32 relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-3 bg-[#C5A059]"></div>
+          <h2 className="text-4xl md:text-5xl font-serif italic mb-20">{t.booking}</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 text-left">
+            <div className="space-y-8">
+              <p className="text-[#C5A059] text-[11px] font-bold uppercase tracking-widest mb-4 border-l-4 border-[#C5A059] pl-6">{t.step1}</p>
+              <div className="flex flex-wrap gap-4">
                 {days.map(day => (
-                  <button key={day} onClick={() => setSelectedDay(day)} className={`px-6 py-3 rounded-2xl text-[11px] font-bold transition-all border ${selectedDay === day ? 'bg-black text-white border-black shadow-lg' : 'bg-white border-gray-200 hover:border-black'}`}>{day}</button>
+                  <button key={day} onClick={() => setSelectedDay(day)} className={`px-8 py-4 rounded-2xl text-[12px] font-bold transition-all border-2 ${selectedDay === day ? 'bg-black text-white border-black shadow-lg' : 'bg-white border-gray-100 hover:border-[#C5A059]'}`}>{day}</button>
                 ))}
               </div>
             </div>
-            <div>
-              <p className="text-[#C5A059] text-[10px] font-bold uppercase mb-8 border-l-2 border-[#C5A059] pl-4">{t.step2}</p>
-              <div className="flex flex-wrap gap-3">
+            <div className="space-y-8">
+              <p className="text-[#C5A059] text-[11px] font-bold uppercase tracking-widest mb-4 border-l-4 border-[#C5A059] pl-6">{t.step2}</p>
+              <div className="flex flex-wrap gap-4">
                 {times.map(time => (
-                  <button key={time} onClick={() => setSelectedTime(time)} className={`px-6 py-3 rounded-2xl text-[11px] font-bold transition-all border ${selectedTime === time ? 'bg-black text-white border-black shadow-lg' : 'bg-white border-gray-200 hover:border-black'}`}>{time}</button>
+                  <button key={time} onClick={() => setSelectedTime(time)} className={`px-8 py-4 rounded-2xl text-[12px] font-bold transition-all border-2 ${selectedTime === time ? 'bg-black text-white border-black shadow-lg' : 'bg-white border-gray-100 hover:border-[#C5A059]'}`}>{time}</button>
                 ))}
               </div>
             </div>
