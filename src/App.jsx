@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Quiz from './components/Quiz';
 
 function App() {
-  // --- ÉTATS (STATES) ---
   const [lang, setLang] = useState('fr');
   const [showModal, setShowModal] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
@@ -16,12 +15,16 @@ function App() {
   const [score, setScore] = useState(0);
   const [quizTermine, setQuizTermine] = useState(false);
 
-  // --- TRADUCTIONS ---
+  // Gère la direction du texte (RTL pour l'arabe)
+  useEffect(() => {
+    document.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  }, [lang]);
+
   const translations = {
     fr: {
       title: "L'Excellence Française",
       subtitle: "L'Art de vivre • Prestige • Kuwait City",
-      booking: "Agenda des séances",
+      booking: "Réservations & Contact",
       step1: "1. Sélectionner le Jour",
       step2: "2. Choisir l'Heure",
       btnLevel: "✨ Déterminer mon niveau",
@@ -29,13 +32,16 @@ function App() {
       placeholderName: "Votre Nom",
       placeholderMsg: "Comment puis-je vous aider ?",
       send: "Envoyer",
-      details: "Détails →",
-      reserver: "Réserver →"
+      cards: [
+        { t: "Soutien Scolaire", d: "Accompagnement d'élite pour élèves des écoles françaises.", c: "bg-[#0047AB]" },
+        { t: "Conversation", d: "Maîtrisez l'art de parler avec aisance et élégance.", c: "bg-white", pop: true },
+        { t: "Français Pro", d: "Business, Diplomatie et préparation examens.", c: "bg-[#D32F2F]" }
+      ]
     },
     en: {
       title: "French Excellence",
       subtitle: "The Art of Living • Prestige • Kuwait City",
-      booking: "Session Schedule",
+      booking: "Booking & Contact",
       step1: "1. Select Day",
       step2: "2. Choose Time",
       btnLevel: "✨ Determine my level",
@@ -43,13 +49,16 @@ function App() {
       placeholderName: "Your Name",
       placeholderMsg: "How can we help you?",
       send: "Send",
-      details: "Details →",
-      reserver: "Book Now →"
+      cards: [
+        { t: "Academic Support", d: "Elite coaching for French school students.", c: "bg-[#0047AB]" },
+        { t: "Conversation", d: "Master the art of speaking with grace and fluidity.", c: "bg-white", pop: true },
+        { t: "Professional French", d: "Business, Diplomacy & Exam prep.", c: "bg-[#D32F2F]" }
+      ]
     },
     ar: {
       title: "التميز الفرنسي",
       subtitle: "فن الحياة • فخامة • مدينة الكويت",
-      booking: "جدول المواعيد",
+      booking: "الحجز والتواصل",
       step1: "١. اختر اليوم",
       step2: "٢. اختر الوقت",
       btnLevel: "✨ حدد مستواي الآن",
@@ -57,14 +66,18 @@ function App() {
       placeholderName: "الاسم الكامل",
       placeholderMsg: "كيف يمكننا مساعدتك؟",
       send: "إرسال",
-      details: "التفاصيل ←",
-      reserver: "احجز الآن ←"
+      cards: [
+        { t: "الدعم الأكاديمي", d: "تدريب متميز لطلاب المدارس الفرنسية.", c: "bg-[#0047AB]" },
+        { t: "المحادثة", d: "أتقن فن التحدث بكل رقي وانسيابية.", c: "bg-white", pop: true },
+        { t: "الفرنسية المهنية", d: "الأعمال، الدبلوماسية والامتحانات الرسمية.", c: "bg-[#D32F2F]" }
+      ]
     }
   };
 
   const t = translations[lang];
+  const days = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+  const times = ['10:00', '14:00', '16:00', '18:00', '20:00'];
 
-  // --- LOGIQUE ---
   const questions = [
     { q: "Connaissez-vous l'alphabet français ?", options: ["Pas du tout", "Un peu", "Parfaitement"], points: [0, 1, 2] },
     { q: "Savez-vous vous présenter (Nom, âge) ?", options: ["Non", "Oui", "Je peux tenir une conversation"], points: [0, 1, 2] },
@@ -80,9 +93,6 @@ function App() {
     }
   };
 
-  const days = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
-  const times = ['10:00', '14:00', '16:00', '18:00', '20:00'];
-
   const envoyerWhatsApp = () => {
     const numero = "33667569993"; 
     const texte = `Bonjour, je suis ${nom}. %0A*Score test:* ${score}/6. %0A*Réservation:* ${selectedDay} à ${selectedTime}. %0A*Message:* ${message}`;
@@ -90,12 +100,10 @@ function App() {
   };
 
   return (
-    <div className={`min-h-screen bg-white text-gray-900 font-sans overflow-x-hidden selection:bg-[#C5A059] selection:text-white ${lang === 'ar' ? 'text-right' : 'text-left'}`}>
+    <div className={`min-h-screen bg-[#FDFCFB] text-gray-900 font-sans overflow-x-hidden ${lang === 'ar' ? 'rtl' : 'ltr'}`}>
       
-      <Navbar setShowModal={setShowModal} />
-
-      {/* SÉLECTEUR DE LANGUE FLOTTANT */}
-      <div className="fixed top-24 right-6 z-[60] flex flex-col gap-2">
+      {/* SÉLECTEUR DE LANGUE */}
+      <div className={`fixed top-24 z-[60] flex flex-col gap-2 ${lang === 'ar' ? 'left-6' : 'right-6'}`}>
         {['fr', 'en', 'ar'].map((l) => (
           <button 
             key={l} 
@@ -107,69 +115,77 @@ function App() {
         ))}
       </div>
 
-      <main className="max-w-7xl mx-auto px-6 pt-6 pb-20 text-center">
-        {/* En-tête */}
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-center items-center gap-4 mb-6">
-          <img src="https://flagcdn.com/w80/fr.png" alt="France" className="w-10 h-auto shadow-sm" />
-          <span className="text-gray-200 font-light text-2xl">|</span>
-          <img src="https://flagcdn.com/w80/kw.png" alt="Kuwait" className="w-10 h-auto shadow-sm" />
+      <Navbar setShowModal={setShowModal} />
+
+      <main className="max-w-6xl mx-auto px-6 pt-12 pb-20 text-center">
+        
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <div className="flex justify-center items-center gap-6 mb-8 opacity-80">
+            <img src="https://flagcdn.com/w80/fr.png" alt="France" className="w-8 h-auto" />
+            <div className="w-[1px] h-6 bg-gray-200"></div>
+            <img src="https://flagcdn.com/w80/kw.png" alt="Kuwait" className="w-8 h-auto" />
+          </div>
+
+          <h1 className="text-5xl md:text-8xl font-serif italic mb-6 tracking-tight leading-tight">{t.title}</h1>
+          <p className="text-[#C5A059] text-[10px] md:text-[12px] tracking-[0.6em] uppercase font-light mb-20">{t.subtitle}</p>
         </motion.div>
 
-        <motion.h1 className="text-4xl md:text-7xl font-serif italic mb-4 tracking-tight">
-          {t.title}
-        </motion.h1>
-        
-        <motion.p className="text-[#C5A059] text-[10px] tracking-[0.6em] uppercase font-light mb-16">
-          {t.subtitle}
-        </motion.p>
-
-        {/* Grille de Cartes */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-24 w-full text-left">
-          <motion.div whileHover={{ y: -8 }} className="bg-[#0047AB] rounded-[45px] p-10 text-white min-h-[350px] flex flex-col justify-between shadow-2xl border-2 border-[#C5A059]">
-            <div><h2 className="text-2xl font-bold mb-4">Soutien Scolaire</h2><p className="text-sm opacity-80">Accompagnement d'élite pour élèves.</p></div>
-            <div className="text-[9px] font-bold uppercase border-t border-white/20 pt-4">{t.details}</div>
-          </motion.div>
-
-          <motion.div whileHover={{ y: -8 }} className="bg-white rounded-[45px] p-10 text-gray-900 min-h-[350px] flex flex-col justify-between shadow-2xl border-2 border-[#C5A059] relative">
-            <div className="absolute -top-4 left-10 bg-[#C5A059] text-white text-[8px] font-bold px-4 py-1 rounded-full uppercase">TOP</div>
-            <div><h2 className="text-2xl font-bold mb-4 text-[#C5A059]">Conversation</h2><p className="text-sm text-gray-500 italic">Maîtrisez l'art de parler avec élégance.</p></div>
-            <div className="text-[#C5A059] text-[9px] font-bold uppercase border-t border-gray-100 pt-4">{t.reserver}</div>
-          </motion.div>
-
-          <motion.div whileHover={{ y: -8 }} className="bg-[#D32F2F] rounded-[45px] p-10 text-white min-h-[350px] flex flex-col justify-between shadow-2xl border-2 border-[#C5A059]">
-            <div><h2 className="text-2xl font-bold mb-4">Français Pro</h2><p className="text-sm opacity-80">Business et Diplomatie.</p></div>
-            <div className="text-[9px] font-bold uppercase border-t border-white/20 pt-4">{t.details}</div>
-          </motion.div>
+        {/* GRILLE DE CARTES CORRIGÉE */}
+        <div className="flex flex-wrap justify-center gap-8 mb-32">
+          {t.cards.map((card, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.2 }}
+              whileHover={{ y: -15 }}
+              className={`${card.c} rounded-[45px] p-10 w-full max-w-[320px] min-h-[400px] flex flex-col justify-between shadow-2xl border-2 border-[#C5A059] relative text-left group overflow-hidden`}
+            >
+              {card.pop && (
+                <div className="absolute top-6 right-8 bg-[#C5A059] text-white text-[8px] font-bold px-3 py-1 rounded-full uppercase">Populaire</div>
+              )}
+              <div>
+                <div className={`w-10 h-1 mb-8 ${card.c === 'bg-white' ? 'bg-[#C5A059]' : 'bg-white'}`}></div>
+                <h2 className={`text-2xl font-bold mb-4 ${card.c === 'bg-white' ? 'text-gray-900' : 'text-white'}`}>{card.t}</h2>
+                <p className={`text-sm font-light leading-relaxed ${card.c === 'bg-white' ? 'text-gray-500' : 'text-white/80'}`}>{card.d}</p>
+              </div>
+              <div className={`pt-6 border-t ${card.c === 'bg-white' ? 'border-gray-100' : 'border-white/10'} flex items-center justify-between`}>
+                <span className={`text-[10px] font-bold uppercase tracking-widest ${card.c === 'bg-white' ? 'text-[#C5A059]' : 'text-white'}`}>Prestige</span>
+                <span className="text-xl group-hover:translate-x-2 transition-transform">→</span>
+              </div>
+            </motion.div>
+          ))}
         </div>
 
-        {/* Bouton CTA Quiz */}
-        <div className="flex justify-center mb-32">
+        {/* CTA QUIZ */}
+        <div className="mb-40">
           <motion.button 
             whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
             onClick={() => {setShowQuiz(true); setQuizTermine(false); setCurrentQuestion(0); setScore(0);}} 
-            className="px-12 py-6 bg-black text-white rounded-full text-[11px] font-bold uppercase tracking-[0.4em] shadow-2xl hover:bg-[#C5A059] transition-all"
+            className="px-16 py-6 bg-black text-white rounded-full text-[11px] font-bold uppercase tracking-[0.4em] shadow-2xl hover:bg-[#C5A059] transition-all"
           >
             {t.btnLevel}
           </motion.button>
         </div>
 
-        {/* Calendrier */}
-        <motion.div className="bg-gray-900 rounded-[50px] p-10 sm:p-16 text-white shadow-2xl border-b-8 border-[#C5A059] max-w-5xl mx-auto">
-          <h2 className="text-2xl tracking-[0.3em] uppercase font-light mb-12 text-center italic">{t.booking}</h2>
-          <div className={`grid grid-cols-1 md:grid-cols-2 gap-16 ${lang === 'ar' ? 'text-right' : 'text-left'}`}>
+        {/* AGENDA */}
+        <motion.div className="bg-white rounded-[60px] p-12 md:p-20 shadow-sm border border-gray-100 max-w-5xl mx-auto mb-20 relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-2 bg-[#C5A059]"></div>
+          <h2 className="text-4xl font-serif italic mb-16">{t.booking}</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 text-left">
             <div>
-              <p className="text-[#C5A059] text-[10px] font-bold uppercase mb-6 border-l-2 border-[#C5A059] pl-4">{t.step1}</p>
+              <p className="text-[#C5A059] text-[10px] font-bold uppercase mb-8 border-l-2 border-[#C5A059] pl-4">{t.step1}</p>
               <div className="flex flex-wrap gap-3">
                 {days.map(day => (
-                  <button key={day} onClick={() => setSelectedDay(day)} className={`px-4 py-3 rounded-xl text-[10px] font-bold transition-all border ${selectedDay === day ? 'bg-[#C5A059] border-[#C5A059]' : 'bg-white/5 border-white/10 text-white/50'}`}>{day}</button>
+                  <button key={day} onClick={() => setSelectedDay(day)} className={`px-6 py-3 rounded-2xl text-[11px] font-bold transition-all border ${selectedDay === day ? 'bg-black text-white border-black shadow-lg' : 'bg-white border-gray-200 hover:border-black'}`}>{day}</button>
                 ))}
               </div>
             </div>
             <div>
-              <p className="text-[#C5A059] text-[10px] font-bold uppercase mb-6 border-l-2 border-[#C5A059] pl-4">{t.step2}</p>
+              <p className="text-[#C5A059] text-[10px] font-bold uppercase mb-8 border-l-2 border-[#C5A059] pl-4">{t.step2}</p>
               <div className="flex flex-wrap gap-3">
                 {times.map(time => (
-                  <button key={time} onClick={() => setSelectedTime(time)} className={`px-4 py-3 rounded-xl text-[10px] font-bold transition-all border ${selectedTime === time ? 'bg-[#C5A059] border-[#C5A059]' : 'bg-white/5 border-white/10 text-white/50'}`}>{time}</button>
+                  <button key={time} onClick={() => setSelectedTime(time)} className={`px-6 py-3 rounded-2xl text-[11px] font-bold transition-all border ${selectedTime === time ? 'bg-black text-white border-black shadow-lg' : 'bg-white border-gray-200 hover:border-black'}`}>{time}</button>
                 ))}
               </div>
             </div>
@@ -177,7 +193,7 @@ function App() {
         </motion.div>
       </main>
 
-      {/* MODALES SÉCURISÉES */}
+      {/* MODALES */}
       {showQuiz && (
         <Quiz 
           showQuiz={showQuiz} setShowQuiz={setShowQuiz} quizTermine={quizTermine} 
@@ -188,9 +204,9 @@ function App() {
 
       <AnimatePresence>
         {showModal && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md">
-            <motion.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="bg-white p-12 rounded-[50px] max-w-lg w-full relative text-left">
-              <button onClick={() => setShowModal(false)} className="absolute top-10 right-10 text-gray-400 text-2xl">✕</button>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-white/90 backdrop-blur-xl">
+            <motion.div initial={{ y: 100, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="bg-white p-12 rounded-[50px] border border-gray-100 shadow-3xl max-w-lg w-full text-left relative">
+              <button onClick={() => setShowModal(false)} className="absolute top-10 right-10 text-gray-400">✕</button>
               <h2 className="text-3xl font-serif italic mb-8">{t.contactTitle}</h2>
               <div className="space-y-6">
                 <input type="text" placeholder={t.placeholderName} onChange={(e) => setNom(e.target.value)} className="w-full py-4 border-b outline-none focus:border-[#C5A059] text-xl font-light" />
@@ -204,8 +220,8 @@ function App() {
         )}
       </AnimatePresence>
 
-      <footer className="py-16 text-center text-[9px] text-gray-300 tracking-[0.5em] uppercase font-light">
-        L'Excellence Française • Kuwait • 2026
+      <footer className="pb-16 text-center text-[9px] text-gray-300 tracking-[0.5em] uppercase font-light">
+        Excellence Française • 2026
       </footer>
     </div>
   );
